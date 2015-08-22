@@ -24,3 +24,15 @@ editSync = (path, pairs) ->
 
 
 init = (projName) ->
+  projNameHyph = projName.replace(camelRx, '$1-$2').toLowerCase()
+  projNameUs   = projName.replace(camelRx, '$1_$2').toLowerCase()
+
+  try
+    execSync 'type lein'
+    execSync 'type pod'
+
+
+  catch e
+    logErr e.message
+
+    process.exit 1
