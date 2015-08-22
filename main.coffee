@@ -31,6 +31,19 @@ init = (projName) ->
     execSync 'type lein'
     execSync 'type pod'
 
+    log 'Creating Leiningen project'
+    execSync "lein new #{ projNameHyph }"
+
+    log 'Updating Leiningen project'
+    process.chdir projNameHyph
+    execSync "cp #{ resources }project.clj project.clj"
+    editSync 'project.clj', [[projNameHyphRx, projNameHyph]]
+    corePath = "src/#{ projNameUs }/core.clj"
+    fs.unlinkSync corePath
+    corePath += 's'
+    execSync "cp #{ resources }core.cljs #{ corePath }"
+    editSync corePath, [[projNameHyphRx, projNameHyph], [projNameRx, projName]]
+
 
   catch e
     logErr e.message
