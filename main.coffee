@@ -58,6 +58,54 @@ init = (projName) ->
     execSync "cp #{ resources }Podfile ."
     execSync 'pod install'
 
+    log 'Updating Xcode project'
+    for ext in ['m', 'h']
+      path = "./iOS/AppDelegate.#{ ext }"
+      execSync "cp #{ resources }AppDelegate.#{ ext } #{ path }"
+      editSync path, [[projNameRx, projName], [projNameHyphRx, projNameHyph]]
+
+    uuid1 = crypto
+      .createHash 'md5'
+      .update projName, 'utf8'
+      .digest('hex')[...24]
+      .toUpperCase()
+
+    uuid2 = uuid1
+      .split ''
+      .splice 7, 1, ((parseInt(uuid1[7], 16) + 1) % 16).toString(16).toUpperCase()
+      .join ''
+
+    editSync \
+      "#{ projName }.xcodeproj/project.pbxproj",
+      [
+        [
+          /OTHER_LDFLAGS = "-ObjC";/g
+          'OTHER_LDFLAGS = "${inherited}";'
+        ]
+        [
+          /\/\* End PBXBuildFile section \*\//
+          "\t\t#{ uuid2 } /* out in Resources */ =
+           {isa = PBXBuildFile; fileRef = #{ uuid1 } /* out */; };
+           \n/* End PBXBuildFile section */"
+        ]
+        [
+          /\/\* End PBXFileReference section \*\//
+          "\t\t#{ uuid1 } /* out */ = {isa = PBXFileReference; lastKnownFileType
+           = folder; name = out; path = ../target/out;
+           sourceTree = \"<group>\"; };\n/* End PBXFileReference section */"
+        ]
+        [
+          /main.jsbundle \*\/\,/
+          "main.jsbundle */,\n\t\t\t\t#{ uuid1 } /* out */,"
+        ]
+        [
+          /\/\* LaunchScreen.xib in Resources \*\/\,/
+          "/* LaunchScreen.xib in Resources */,
+           \n\t\t\t\t#{ uuid2 } /* out in Resources */,"
+        ]
+      ]
+
+
   catch e
     logErr e.message
 
