@@ -43,7 +43,8 @@ init = (projName) ->
     corePath += 's'
     execSync "cp #{ resources }core.cljs #{ corePath }"
     editSync corePath, [[projNameHyphRx, projNameHyph], [projNameRx, projName]]
-
+    execSync "cp #{ resources }ambly.sh start.sh"
+    editSync 'start.sh', [[projNameUnderRx, projNameUs]]
 
   catch e
     logErr e.message
