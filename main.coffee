@@ -53,6 +53,11 @@ init = (projName) ->
     execSync "#{ binPath }react-native init #{ projName }"
     execSync "mv #{ projName } iOS"
 
+    log 'Installing Pod dependencies'
+    process.chdir 'iOS'
+    execSync "cp #{ resources }Podfile ."
+    execSync 'pod install'
+
   catch e
     logErr e.message
 
