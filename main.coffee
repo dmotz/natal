@@ -49,6 +49,10 @@ init = (projName) ->
     log 'Compiling ClojureScript'
     execSync 'lein cljsbuild once dev'
 
+    log 'Creating React Native skeleton'
+    execSync "#{ binPath }react-native init #{ projName }"
+    execSync "mv #{ projName } iOS"
+
   catch e
     logErr e.message
 
