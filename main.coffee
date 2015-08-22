@@ -28,6 +28,9 @@ init = (projName) ->
   projNameUs   = projName.replace(camelRx, '$1_$2').toLowerCase()
 
   try
+    if fs.existsSync projNameHyph
+      throw new Error "Directory #{ projNameHyph } already exists"
+
     execSync 'type lein'
     execSync 'type pod'
 
