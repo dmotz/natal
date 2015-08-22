@@ -46,6 +46,9 @@ init = (projName) ->
     execSync "cp #{ resources }ambly.sh start.sh"
     editSync 'start.sh', [[projNameUnderRx, projNameUs]]
 
+    log 'Compiling ClojureScript'
+    execSync 'lein cljsbuild once dev'
+
   catch e
     logErr e.message
 
