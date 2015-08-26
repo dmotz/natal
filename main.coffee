@@ -57,13 +57,13 @@ init = (projName) ->
     execSync 'lein cljsbuild once dev'
 
     log 'Creating React Native skeleton'
-    execSync "#{ binPath }react-native init #{ projName }"
+    execSync "#{ binPath }react-native init #{ projName }", stdio: 'ignore'
     execSync "mv #{ projName } iOS"
 
     log 'Installing Pod dependencies'
     process.chdir 'iOS'
     execSync "cp #{ resources }Podfile ."
-    execSync 'pod install'
+    execSync 'pod install', stdio: 'ignore'
 
     log 'Updating Xcode project'
     for ext in ['m', 'h']
