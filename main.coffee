@@ -1,6 +1,7 @@
 fs         = require 'fs'
 crypto     = require 'crypto'
 {execSync} = require 'child_process'
+chalk      = require 'chalk'
 
 resources       = __dirname + '/resources/'
 binPath         = __dirname + '/node_modules/.bin/'
@@ -9,12 +10,12 @@ projNameRx      = /\$PROJECT_NAME\$/g
 projNameHyphRx  = /\$PROJECT_NAME_HYPHENATED\$/g
 projNameUnderRx = /\$PROJECT_NAME_UNDERSCORED\$/g
 
-log = (s) ->
-  console.log "\x1b[32m#{ s }...\x1b[0m"
+log = (s, color = 'green') ->
+  console.log chalk[color] s
 
 
-logErr = (err) ->
-  console.error "\x1b[31m#{ err }\x1b[0m"
+logErr = (err, color = 'red') ->
+  console.error chalk[color] err
 
 
 editSync = (path, pairs) ->
