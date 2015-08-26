@@ -29,6 +29,9 @@ init = (projName) ->
   projNameUs   = projName.replace(camelRx, '$1_$2').toLowerCase()
 
   try
+    log "Creating #{ projName }", 'bgMagenta'
+    log ''
+
     if fs.existsSync projNameHyph
       throw new Error "Directory #{ projNameHyph } already exists"
 
@@ -108,6 +111,18 @@ init = (projName) ->
            \n\t\t\t\t#{ uuid2 } /* out in Resources */,"
         ]
       ]
+
+    execSync "open #{ projName }.xcworkspace"
+    log '\nWhen Xcode appears, click the play button to run the app on the simulator.', 'yellow'
+    log 'Then run the following for an interactive workflow:', 'yellow'
+    log "cd #{ projNameHyph }", 'inverse'
+    log './start.sh', 'inverse'
+    log 'First, choose the correct device (Probably [1]).', 'yellow'
+    log 'At the REPL prompt type this:', 'yellow'
+    log "(in-ns '#{ projNameHyph }.core)", 'inverse'
+    log 'Changes you make via the REPL or by changing your .cljs files should appear live.', 'yellow'
+    log 'Try this command as an example:', 'yellow'
+    log '(swap! app-state assoc :text "Hello Native World")', 'inverse'
 
 
   catch e
