@@ -1,0 +1,23 @@
+{
+  "name": "natal",
+  "version": "0.0.0",
+  "description": "Bootstrap ClojureScript React Native apps",
+  "main": "index.js",
+  "author": {
+    "name": "Dan Motzenbecker",
+    "url": "http://oxism.com",
+    "email": "dan@oxism.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "coffee-script": "^1.9.3",
+    "react-native-cli": "^0.1.4"
+  },
+  "engines": {
+    "node": ">=0.12.x",
+    "iojs": ">=3.1.x"
+  },
+  "engine-strict": true,
+  "preferGlobal": true
+}
