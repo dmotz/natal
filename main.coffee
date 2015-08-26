@@ -123,9 +123,17 @@ init = (projName) ->
     log 'Changes you make via the REPL or by changing your .cljs files should appear live.', 'yellow'
     log 'Try this command as an example:', 'yellow'
     log '(swap! app-state assoc :text "Hello Native World")', 'inverse'
+    log ''
 
 
   catch e
-    logErr e.message
+    if e.message.match /type\:.+lein/i
+      logErr 'Leiningen is required (http://leiningen.org/)'
+
+    else if e.message.match /type\:.+pod/i
+      logErr 'CocoaPods is required (https://cocoapods.org/)'
+
+    else
+      logErr e.message
 
     process.exit 1
