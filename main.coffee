@@ -1,3 +1,9 @@
+# Natal
+# Bootstrap ClojureScript React Native apps
+# Dan Motzenbecker
+# http://oxism.com
+# MIT License
+
 fs         = require 'fs'
 crypto     = require 'crypto'
 {execSync} = require 'child_process'
@@ -124,6 +130,8 @@ init = (projName) ->
     log 'Try this command as an example:', 'yellow'
     log '(swap! app-state assoc :text "Hello Native World")', 'inverse'
     log ''
+    log '✔ Done', 'bgMagenta'
+    log ''
 
 
   catch e
@@ -137,3 +145,13 @@ init = (projName) ->
       logErr e.message
 
     process.exit 1
+
+
+[_, _, name] = process.argv
+
+unless name
+  logErr 'You must pass a project name as the first argument.'
+  logErr 'e.g. natal HelloWorld'
+  process.exit 1
+
+init name
