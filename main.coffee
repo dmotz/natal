@@ -83,10 +83,9 @@ init = (projName) ->
       .digest('hex')[...24]
       .toUpperCase()
 
-    uuid2 = uuid1
-      .split ''
-      .splice 7, 1, ((parseInt(uuid1[7], 16) + 1) % 16).toString(16).toUpperCase()
-      .join ''
+    uuid2 = uuid1.split ''
+    uuid2.splice 7, 1, ((parseInt(uuid1[7], 16) + 1) % 16).toString(16).toUpperCase()
+    uuid2 = uuid2.join ''
 
     editSync \
       "#{ projName }.xcodeproj/project.pbxproj",
