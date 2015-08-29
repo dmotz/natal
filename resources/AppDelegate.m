@@ -230,7 +230,7 @@ RCT_EXPORT_MODULE()
 
   // Send a nonsense UI event to cause React Native to load our Om UI
   RCTRootView* rootView = (RCTRootView*)self.window.rootViewController.view;
-  [rootView.bridge.modules[@"RCTEventDispatcher"] sendInputEventWithName:@"" body:@{@"target": @1}];
+  [rootView.bridge.modules[@"RCTEventDispatcher"] sendInputEventWithName:@"dummy" body:@{@"target": @1}];
 
   // Now that React Native has been initialized, fire up our REPL server
   self.replServer = [[ABYServer alloc] initWithContext:self.contextManager.context
