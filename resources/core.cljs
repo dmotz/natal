@@ -9,7 +9,6 @@
 
 
 ;; Setup some methods to help create React Native elements
-
 (defn view [opts & children]
   (apply js/React.createElement js/React.View (clj->js opts) children))
 
@@ -18,14 +17,13 @@
 
 
 ;; Set up our Om UI
-
 (defonce app-state (atom {:text "Welcome to $PROJECT_NAME$"}))
 
 (defn widget [data owner]
   (reify
     om/IRender
     (render [this]
-      (view {:style {:flexDirection "row" :margin 40 :fontSize 20}}
+      (view {:style {:flexDirection "column" :margin 40}}
         (text nil (:text data))))))
 
 (om/root widget app-state {:target 1})
