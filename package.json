@@ -23,5 +23,8 @@
     "url": "git://github.com/dmotz/natal.git"
   },
   "engine-strict": true,
-  "preferGlobal": true
+  "preferGlobal": true,
+  "bin": {
+    "natal": "./index.js"
+  }
 }
