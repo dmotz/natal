@@ -18,6 +18,10 @@
     "node": ">=0.12.x",
     "iojs": ">=3.1.x"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dmotz/natal.git"
+  },
   "engine-strict": true,
   "preferGlobal": true
 }
