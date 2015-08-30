@@ -39,3 +39,12 @@ a much nicer experience with arrow keys
 See [this issue](https://github.com/omcljs/ambly/issues/97) in Ambly for details.
 - Running multiple React Native apps at once can cause problems
 
+
+## Aspirations
+- [ ] Xcode-free development with CLI tools
+- [ ] Automatically run React packager in background
+- [ ] Automatically tail cljs build log and report compile errors
+- [ ] Templates for other ClojureScript React wrappers
+
+
+Contributions are welcome.
