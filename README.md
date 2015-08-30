@@ -14,3 +14,20 @@ It stands firmly on the shoulders of giants, specifically those of
 [documentation](https://github.com/omcljs/ambly/wiki/ClojureScript-React-Native-Quick-Start)
 on setting up a ClojureScript React Native app.
 
+
+## Usage
+First, install the CLI using npm:
+
+```
+$ npm install -g natal
+```
+
+Then run `natal` with your app's name as the first argument:
+
+```
+$ natal FutureApp
+```
+
+If your app is more than a single word, be sure to type it in CamelCase.
+A corresponding hyphenated Clojure namespace will be created.
+
