@@ -40,7 +40,7 @@ $ cd future-app
 $ ./start.sh
 ```
 
-First, choose the correct device (Probably `[1]`). At the REPL prompt type this:
+First, choose the correct device (probably `[1]`). At the REPL prompt type this:
 
 ```clojure
 (in-ns 'future-app.core)
