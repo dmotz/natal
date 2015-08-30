@@ -31,3 +31,11 @@ $ natal FutureApp
 If your app is more than a single word, be sure to type it in CamelCase.
 A corresponding hyphenated Clojure namespace will be created.
 
+## Tips
+- Natal requires npm, Leiningen, and CocoaPods to be installed
+- Having `rlwrap` installed is optional but recommended since it makes the REPL
+a much nicer experience with arrow keys
+- Don't press ⌘-R in the simulator; code changes should be reflected automatically.
+See [this issue](https://github.com/omcljs/ambly/issues/97) in Ambly for details.
+- Running multiple React Native apps at once can cause problems
+
