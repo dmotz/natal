@@ -54,6 +54,13 @@ Try this command as an example:
 (swap! app-state assoc :text "Hello Native World")
 ```
 
+When the REPL starts it will print the location of its compilation log.
+It's useful to tail it to see any errors, like so:
+
+```
+$ tail -f /Volumes/Ambly-81C53995/watch.log
+```
+
 
 ## Tips
 - Natal requires npm, Leiningen, and CocoaPods to be installed
