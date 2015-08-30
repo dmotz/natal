@@ -60,11 +60,12 @@ Try this command as an example:
 - Having `rlwrap` installed is optional but recommended since it makes the REPL
 a much nicer experience with arrow keys
 - Don't press ⌘-R in the simulator; code changes should be reflected automatically.
-See [this issue](https://github.com/omcljs/ambly/issues/97) in Ambly for details.
+See [this issue](https://github.com/omcljs/ambly/issues/97) in Ambly for details
 - Running multiple React Native apps at once can cause problems
 
 
 ## Aspirations
+- [ ] Automatic wrapping of all React Native component functions for ClojureScript
 - [ ] Xcode-free development with CLI tools
 - [ ] Automatically run React packager in background
 - [ ] Automatically tail cljs build log and report compile errors
