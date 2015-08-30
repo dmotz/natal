@@ -8,9 +8,10 @@ fs         = require 'fs'
 crypto     = require 'crypto'
 {execSync} = require 'child_process'
 chalk      = require 'chalk'
+reactInit  = require 'react-native/local-cli/init'
+rnVersion  = require(__dirname + '/package.json').dependencies['react-native']
 
 resources       = __dirname + '/resources/'
-binPath         = __dirname + '/node_modules/.bin/'
 camelRx         = /([a-z])([A-Z])/g
 projNameRx      = /\$PROJECT_NAME\$/g
 projNameHyphRx  = /\$PROJECT_NAME_HYPHENATED\$/g
@@ -63,8 +64,22 @@ init = (projName) ->
     execSync 'lein cljsbuild once dev'
 
     log 'Creating React Native skeleton'
-    execSync "#{ binPath }react-native init #{ projName }", stdio: 'ignore'
-    execSync "mv #{ projName } iOS"
+    fs.mkdirSync 'iOS'
+    process.chdir 'iOS'
+    _log = console.log
+    global.console.log = ->
+    reactInit '.', projName
+    global.console.log = _log
+    fs.writeFileSync 'package.json', JSON.stringify
+      name:    projName
+      version: '0.0.1'
+      private: true
+      scripts:
+        start: 'node_modules/react-native/packager/packager.sh'
+      dependencies:
+        'react-native': rnVersion
+    , null, 2
+    execSync 'npm i', stdio: 'ignore'
 
     log 'Installing Pod dependencies'
     process.chdir 'iOS'
@@ -73,7 +88,7 @@ init = (projName) ->
 
     log 'Updating Xcode project'
     for ext in ['m', 'h']
-      path = "./iOS/AppDelegate.#{ ext }"
+      path = "#{ projName }/AppDelegate.#{ ext }"
       execSync "cp #{ resources }AppDelegate.#{ ext } #{ path }"
       editSync path, [[projNameRx, projName], [projNameHyphRx, projNameHyph]]
 
@@ -103,7 +118,7 @@ init = (projName) ->
         [
           /\/\* End PBXFileReference section \*\//
           "\t\t#{ uuid1 } /* out */ = {isa = PBXFileReference; lastKnownFileType
-           = folder; name = out; path = ../target/out;
+           = folder; name = out; path = ../../../target/out;
            sourceTree = \"<group>\"; };\n/* End PBXFileReference section */"
         ]
         [
