@@ -31,6 +31,30 @@ $ natal FutureApp
 If your app is more than a single word, be sure to type it in CamelCase.
 A corresponding hyphenated Clojure namespace will be created.
 
+When Xcode appears, click the play button to run the app on the simulator.
+
+Then run the following for an interactive workflow:
+
+```
+$ cd future-app
+$ ./start.sh
+```
+
+First, choose the correct device (Probably [1]). At the REPL prompt type this:
+
+```clojure
+(in-ns 'future-app.core)
+```
+
+Changes you make via the REPL or by changing your .cljs files should appear live.
+
+Try this command as an example:
+
+```clojure
+(swap! app-state assoc :text "Hello Native World")
+```
+
+
 ## Tips
 - Natal requires npm, Leiningen, and CocoaPods to be installed
 - Having `rlwrap` installed is optional but recommended since it makes the REPL
