@@ -1,6 +1,6 @@
 {
   "name": "natal",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Bootstrap ClojureScript React Native apps",
   "main": "index.js",
   "author": {
@@ -22,9 +22,17 @@
     "type": "git",
     "url": "git://github.com/dmotz/natal.git"
   },
+  "homepage": "http://github.com/dmotz/natal",
   "engine-strict": true,
   "preferGlobal": true,
   "bin": {
     "natal": "./index.js"
-  }
+  },
+  "keywords": [
+    "clojure",
+    "clojurescript",
+    "react",
+    "react native",
+    "ios"
+  ]
 }
