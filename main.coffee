@@ -8,6 +8,7 @@ fs         = require 'fs'
 crypto     = require 'crypto'
 {execSync} = require 'child_process'
 chalk      = require 'chalk'
+semver     = require 'semver'
 reactInit  = require 'react-native/local-cli/init'
 rnVersion  = require(__dirname + '/package.json').dependencies['react-native']
 
@@ -44,6 +45,10 @@ init = (projName) ->
 
     execSync 'type lein'
     execSync 'type pod'
+    podVersion = execSync('pod --version').toString().trim()
+    unless semver.satisfies podVersion, '>=0.36.4'
+      throw new Error "Natal requires CocoaPods 0.36.4 or higher (you have #{ podVersion }).
+        \nRun [sudo] gem update cocoapods and try again."
 
     log 'Creating Leiningen project'
     execSync "lein new #{ projNameHyph }"
