@@ -12,7 +12,8 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "coffee-script": "^1.9.3",
-    "react-native": "^0.10.1"
+    "react-native": "^0.10.1",
+    "semver": "^5.0.1"
   },
   "engines": {
     "node": ">=0.12.x",
