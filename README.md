@@ -16,7 +16,11 @@ on setting up a ClojureScript React Native app.
 
 
 ## Usage
-First, install the CLI using npm:
+
+Before getting started, make sure you have npm, Leiningen, and CocoaPods (>=0.36.4)
+installed.
+
+Then, install the CLI using npm:
 
 ```
 $ npm install -g natal
@@ -31,7 +35,7 @@ $ natal FutureApp
 If your app is more than a single word, be sure to type it in CamelCase.
 A corresponding hyphenated Clojure namespace will be created.
 
-When Xcode appears, click the play button to run the app on the simulator.
+When Xcode appears, click the play button (or ⌘-R) to run the app on the simulator.
 
 Then run the following for an interactive workflow:
 
@@ -63,7 +67,6 @@ $ tail -f /Volumes/Ambly-81C53995/watch.log
 
 
 ## Tips
-- Natal requires npm, Leiningen, and CocoaPods to be installed
 - Having `rlwrap` installed is optional but recommended since it makes the REPL
 a much nicer experience with arrow keys
 - Don't press ⌘-R in the simulator; code changes should be reflected automatically.
