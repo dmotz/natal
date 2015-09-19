@@ -35,6 +35,17 @@ editSync = (path, pairs) ->
   , fs.readFileSync path, encoding: 'ascii'
 
 
+writeConfig = (config) ->
+  try
+    fs.writeFileSync '.natal', JSON.stringify config, null, 2
+  catch {message}
+    logErr \
+      if message.match /EACCES/i
+        'Invalid write permissions for creating .natal config file'
+      else
+        message
+
+
 init = (projName) ->
   projNameHyph = projName.replace(camelRx, '$1-$2').toLowerCase()
   projNameUs   = projName.replace(camelRx, '$1_$2').toLowerCase()
@@ -142,8 +153,9 @@ init = (projName) ->
         ]
       ]
 
+    log 'Creating Natal config'
     process.chdir '../..'
-    openXcode projName
+    writeConfig name: projName
 
     log '\nWhen Xcode appears, click the play button to run the app on the simulator.', 'yellow'
     log 'Then run the following for an interactive workflow:', 'yellow'
