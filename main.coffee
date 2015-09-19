@@ -7,6 +7,7 @@
 fs         = require 'fs'
 crypto     = require 'crypto'
 {execSync} = require 'child_process'
+cli        = require 'commander'
 chalk      = require 'chalk'
 semver     = require 'semver'
 reactInit  = require 'react-native/local-cli/init'
@@ -170,11 +171,19 @@ init = (projName) ->
     process.exit 1
 
 
-[_, _, name] = process.argv
+cli.version '0.0.4'
 
-unless name
-  logErr 'You must pass a project name as the first argument.'
-  logErr 'e.g. natal HelloWorld'
-  process.exit 1
+cli.command 'init <name>'
+  .description 'Create a new ClojureScript React Native project'
+  .action (name) ->
+    if typeof name isnt 'string'
+      logErr '''
+             natal init requires a project name as the first argument.
+             e.g.
+             natal init HelloWorld
+             '''
 
-init name
+    init name
+
+
+cli.parse process.argv
