@@ -27,6 +27,7 @@ log = (s, color = 'green') ->
 
 logErr = (err, color = 'red') ->
   console.error chalk[color] err
+  process.exit 1
 
 
 editSync = (path, pairs) ->
