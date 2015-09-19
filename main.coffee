@@ -156,16 +156,14 @@ init = (projName) ->
     log '✔ Done', 'bgMagenta'
     log ''
 
-
-  catch e
-    if e.message.match /type\:.+lein/i
-      logErr 'Leiningen is required (http://leiningen.org/)'
-
-    else if e.message.match /type\:.+pod/i
-      logErr 'CocoaPods is required (https://cocoapods.org/)'
-
-    else
-      logErr e.message
+  catch {message}
+    logErr \
+      if message.match /type\:.+lein/i
+        'Leiningen is required (http://leiningen.org/)'
+      else if message.match /type\:.+pod/i
+        'CocoaPods is required (https://cocoapods.org/)'
+      else
+        message
 
     process.exit 1
 
