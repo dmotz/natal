@@ -196,7 +196,21 @@ init = (projName) ->
       else
         message
 
-    process.exit 1
+
+openXcode = (name) ->
+  try
+    execSync "open iOS/iOS/#{name}.xcworkspace", stdio: 'ignore'
+  catch {message}
+    logErr \
+      if message.match /ENOENT/i
+        """
+        Cannot find #{name}.xcworkspace in iOS/iOS.
+        Run this command from your project's root directory.
+        """
+      else if message.match /EACCES/i
+        "Invalid permissions for opening #{name}.xcworkspace in iOS/iOS"
+      else
+        message
 
 
 cli.version '0.0.4'
@@ -212,6 +226,11 @@ cli.command 'init <name>'
              '''
 
     init name
+
+cli.command 'xcode'
+  .description 'Open Xcode project'
+  .action ->
+    openXcode readConfig().name
 
 
 cli.parse process.argv
