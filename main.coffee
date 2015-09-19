@@ -18,7 +18,7 @@ camelRx         = /([a-z])([A-Z])/g
 projNameRx      = /\$PROJECT_NAME\$/g
 projNameHyphRx  = /\$PROJECT_NAME_HYPHENATED\$/g
 projNameUnderRx = /\$PROJECT_NAME_UNDERSCORED\$/g
-podMinVersion   = '0.36.4'
+podMinVersion   = '0.38.2'
 
 
 log = (s, color = 'green') ->
