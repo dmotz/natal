@@ -17,6 +17,8 @@ camelRx         = /([a-z])([A-Z])/g
 projNameRx      = /\$PROJECT_NAME\$/g
 projNameHyphRx  = /\$PROJECT_NAME_HYPHENATED\$/g
 projNameUnderRx = /\$PROJECT_NAME_UNDERSCORED\$/g
+podMinVersion   = '0.36.4'
+
 
 log = (s, color = 'green') ->
   console.log chalk[color] s
@@ -46,9 +48,11 @@ init = (projName) ->
     execSync 'type lein'
     execSync 'type pod'
     podVersion = execSync('pod --version').toString().trim()
-    unless semver.satisfies podVersion, '>=0.36.4'
-      throw new Error "Natal requires CocoaPods 0.36.4 or higher (you have #{ podVersion }).
-        \nRun [sudo] gem update cocoapods and try again."
+    unless semver.satisfies podVersion, ">=#{ podMinVersion }"
+      throw new Error """
+                      Natal requires CocoaPods #{ podMinVersion } or higher (you have #{ podVersion }).
+                      Run [sudo] gem update cocoapods and try again.
+                      """
 
     log 'Creating Leiningen project'
     execSync "lein new #{ projNameHyph }"
