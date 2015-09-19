@@ -215,7 +215,7 @@ openXcode = (name) ->
 
 getDeviceList = ->
   try
-    execSync 'xcrun instruments -s'
+    execSync 'xcrun instruments -s devices'
       .toString()
       .split '\n'
       .filter (line) -> /^i/.test line
