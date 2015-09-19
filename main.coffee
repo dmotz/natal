@@ -46,6 +46,21 @@ writeConfig = (config) ->
         message
 
 
+readConfig = ->
+  try
+    JSON.parse fs.readFileSync '.natal'
+  catch {message}
+    logErr \
+      if message.match /ENOENT/i
+        'No Natal config was found in this directory (.natal)'
+      else if message.match /EACCES/i
+        'No read permissions for .natal'
+      else if message.match /Unexpected/i
+        '.natal contains malformed JSON'
+      else
+        message
+
+
 init = (projName) ->
   projNameHyph = projName.replace(camelRx, '$1-$2').toLowerCase()
   projNameUs   = projName.replace(camelRx, '$1_$2').toLowerCase()
