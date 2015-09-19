@@ -213,6 +213,16 @@ openXcode = (name) ->
         message
 
 
+getDeviceList = ->
+  try
+    execSync 'xcrun instruments -s'
+      .toString()
+      .split '\n'
+      .filter (line) -> /^i/.test line
+  catch {message}
+    logErr 'Device listing failed: ' + message
+
+
 cli.version '0.0.4'
 
 cli.command 'init <name>'
@@ -227,10 +237,22 @@ cli.command 'init <name>'
 
     init name
 
+cli.command 'launch'
+  .description 'Run project in simulator and start REPL'
+  .action ->
+    launch readConfig()
+
 cli.command 'xcode'
   .description 'Open Xcode project'
   .action ->
     openXcode readConfig().name
+
+cli.command 'listdevices'
+  .description 'List available simulator devices by index'
+  .action ->
+    console.log (getDeviceList()
+      .map (line, i) -> "#{i}\t#{line}"
+      .join '\n')
 
 
 cli.parse process.argv
