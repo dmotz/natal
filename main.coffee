@@ -55,7 +55,7 @@ init = (projName) ->
                       """
 
     log 'Creating Leiningen project'
-    execSync "lein new #{projNameHyph}"
+    execSync "lein new #{projNameHyph}", stdio: 'ignore'
 
     log 'Updating Leiningen project'
     process.chdir projNameHyph
@@ -70,7 +70,7 @@ init = (projName) ->
     editSync 'start.sh', [[projNameUnderRx, projNameUs]]
 
     log 'Compiling ClojureScript'
-    execSync 'lein cljsbuild once dev'
+    execSync 'lein cljsbuild once dev', stdio: 'ignore'
 
     log 'Creating React Native skeleton'
     fs.mkdirSync 'iOS'
