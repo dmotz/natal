@@ -11,8 +11,10 @@ cli        = require 'commander'
 chalk      = require 'chalk'
 semver     = require 'semver'
 reactInit  = require 'react-native/local-cli/init'
-rnVersion  = require(__dirname + '/package.json').dependencies['react-native']
+pkgJson    = require __dirname + '/package.json'
 
+nodeVersion     = pkgJson.engines.node
+rnVersion       = pkgJson.dependencies['react-native']
 resources       = __dirname + '/resources/'
 camelRx         = /([a-z])([A-Z])/g
 projNameRx      = /\$PROJECT_NAME\$/g
@@ -254,5 +256,11 @@ cli.command 'listdevices'
       .map (line, i) -> "#{i}\t#{line}"
       .join '\n')
 
+
+unless semver.satisfies process.version[1...], nodeVersion
+  logErr """
+         Natal requires Node.js version #{nodeVersion}
+         You have #{process.version[1...]}
+         """
 
 cli.parse process.argv
