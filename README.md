@@ -14,6 +14,10 @@ It stands firmly on the shoulders of giants, specifically those of
 [documentation](https://github.com/omcljs/ambly/wiki/ClojureScript-React-Native-Quick-Start)
 on setting up a ClojureScript React Native app.
 
+## Dependencies
+
+Ruby version >= 2.0.0.
+[CocoaPods](https://cocoapods.org/)
 
 ## Usage
 
