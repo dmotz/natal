@@ -77,6 +77,8 @@ init = (projName) ->
 
     execSync 'type lein'
     execSync 'type pod'
+    execSync 'type watchman'
+
     podVersion = execSync('pod --version').toString().trim()
     unless semver.satisfies podVersion, ">=#{podMinVersion}"
       throw new Error """
@@ -192,9 +194,11 @@ init = (projName) ->
   catch {message}
     logErr \
       if message.match /type\:.+lein/i
-        'Leiningen is required (http://leiningen.org/)'
+        'Leiningen is required (http://leiningen.org)'
       else if message.match /type\:.+pod/i
-        'CocoaPods is required (https://cocoapods.org/)'
+        'CocoaPods is required (https://cocoapods.org)'
+      else if message.match /type\:.+watchman/i
+        'Watchman is required (https://facebook.github.io/watchman)'
       else
         message
 
