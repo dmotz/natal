@@ -80,6 +80,7 @@ See [this issue](https://github.com/omcljs/ambly/issues/97) in Ambly for details
 - [ ] Automatically run React packager in background
 - [ ] Automatically tail cljs build log and report compile errors
 - [ ] Templates for other ClojureScript React wrappers
+- [ ] Automatic bundling for offline device usage and App Store distribution
 
 
 Contributions are welcome.
