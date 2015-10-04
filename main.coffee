@@ -33,6 +33,13 @@ logErr = (err, color = 'red') ->
   process.exit 1
 
 
+exec = (cmd, keepOutput) ->
+  if keepOutput
+    execSync cmd
+  else
+    execSync cmd, stdio: 'ignore'
+
+
 readFile = (path) ->
   fs.readFileSync path, encoding: 'ascii'
 
@@ -103,11 +110,11 @@ init = (projName) ->
     if fs.existsSync projNameHyph
       throw new Error "Directory #{projNameHyph} already exists"
 
-    execSync 'type lein'
-    execSync 'type pod'
-    execSync 'type watchman'
+    exec 'type lein'
+    exec 'type pod'
+    exec 'type watchman'
 
-    podVersion = execSync('pod --version').toString().trim()
+    podVersion = exec('pod --version', true).toString().trim()
     unless semver.satisfies podVersion, ">=#{podMinVersion}"
       throw new Error """
                       Natal requires CocoaPods #{podMinVersion} or higher (you have #{podVersion}).
@@ -115,22 +122,22 @@ init = (projName) ->
                       """
 
     log 'Creating Leiningen project'
-    execSync "lein new #{projNameHyph}", stdio: 'ignore'
+    exec "lein new #{projNameHyph}"
 
     log 'Updating Leiningen project'
     process.chdir projNameHyph
-    execSync "cp #{resources}project.clj project.clj"
+    exec "cp #{resources}project.clj project.clj"
     editSync 'project.clj', [[projNameHyphRx, projNameHyph]]
     corePath = "src/#{projNameUs}/core.clj"
     fs.unlinkSync corePath
     corePath += 's'
-    execSync "cp #{resources}core.cljs #{corePath}"
+    exec "cp #{resources}core.cljs #{corePath}"
     editSync corePath, [[projNameHyphRx, projNameHyph], [projNameRx, projName]]
-    execSync "cp #{resources}ambly.sh start.sh"
+    exec "cp #{resources}ambly.sh start.sh"
     editSync 'start.sh', [[projNameUnderRx, projNameUs]]
 
     log 'Compiling ClojureScript'
-    execSync 'lein cljsbuild once dev', stdio: 'ignore'
+    exec 'lein cljsbuild once dev'
 
     log 'Creating React Native skeleton'
     fs.mkdirSync 'iOS'
@@ -148,17 +155,17 @@ init = (projName) ->
       dependencies:
         'react-native': rnVersion
     , null, 2
-    execSync 'npm i', stdio: 'ignore'
+    exec 'npm i'
 
     log 'Installing Pod dependencies'
     process.chdir 'iOS'
-    execSync "cp #{resources}Podfile ."
-    execSync 'pod install', stdio: 'ignore'
+    exec "cp #{resources}Podfile ."
+    exec 'pod install'
 
     log 'Updating Xcode project'
     for ext in ['m', 'h']
       path = "#{projName}/AppDelegate.#{ext}"
-      execSync "cp #{resources}AppDelegate.#{ext} #{path}"
+      exec "cp #{resources}AppDelegate.#{ext} #{path}"
       editSync path, [[projNameRx, projName], [projNameHyphRx, projNameHyph]]
 
     uuid1 = crypto
@@ -264,16 +271,16 @@ init = (projName) ->
 launch = ({name, device}) ->
   log 'Building Xcode project'
   try
-    execSync "
-             xcodebuild
-             -workspace iOS/iOS/#{name}.xcworkspace
-             -scheme #{name}
-             -destination platform='iOS Simulator',OS=latest,id='#{device}'
-             clean test
-             ", stdio: 'ignore'
+    exec "
+         xcodebuild
+         -workspace iOS/iOS/#{name}.xcworkspace
+         -scheme #{name}
+         -destination platform='iOS Simulator',OS=latest,id='#{device}'
+         clean test
+         "
 
     log 'Launching simulator'
-    execSync "xcrun simctl launch #{device} #{getBundleId name}", stdio: 'ignore'
+    exec "xcrun simctl launch #{device} #{getBundleId name}"
 
   catch {message}
     logErr message
@@ -281,7 +288,7 @@ launch = ({name, device}) ->
 
 openXcode = (name) ->
   try
-    execSync "open iOS/iOS/#{name}.xcworkspace", stdio: 'ignore'
+    exec "open iOS/iOS/#{name}.xcworkspace"
   catch {message}
     logErr \
       if message.match /ENOENT/i
@@ -297,7 +304,7 @@ openXcode = (name) ->
 
 getDeviceList = ->
   try
-    execSync 'xcrun instruments -s devices'
+    exec 'xcrun instruments -s devices', true
       .toString()
       .split '\n'
       .filter (line) -> /^i/.test line
