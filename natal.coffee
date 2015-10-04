@@ -247,14 +247,19 @@ init = (projName) ->
     writeConfig config
     launch config
 
-    log '\nWhen Xcode appears, click the play button to run the app on the simulator.', 'yellow'
-    log 'Then run the following for an interactive workflow:', 'yellow'
+    log ''
+    log 'To get started with your new app, first cd into its directory:', 'yellow'
     log "cd #{projNameHyph}", 'inverse'
-    log './start.sh', 'inverse'
-    log 'First, choose the correct device (Probably [1]).', 'yellow'
+    log ''
+    log 'Boot the REPL by typing:', 'yellow'
+    log 'natal repl', 'inverse'
+    log 'Then choose the correct device to connect to (probably 1).', 'yellow'
+    log ''
     log 'At the REPL prompt type this:', 'yellow'
     log "(in-ns '#{projNameHyph}.core)", 'inverse'
+    log ''
     log 'Changes you make via the REPL or by changing your .cljs files should appear live.', 'yellow'
+    log ''
     log 'Try this command as an example:', 'yellow'
     log '(swap! app-state assoc :text "Hello Native World")', 'inverse'
     log ''
