@@ -334,7 +334,7 @@ cli.command 'init <name>'
 
 
 cli.command 'launch'
-  .description 'Run project in simulator and start REPL'
+  .description 'Compile project and run in simulator'
   .action ->
     launch readConfig()
 
