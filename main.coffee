@@ -10,16 +10,15 @@ crypto     = require 'crypto'
 cli        = require 'commander'
 chalk      = require 'chalk'
 semver     = require 'semver'
-reactInit  = require 'react-native/local-cli/init'
 pkgJson    = require __dirname + '/package.json'
 
 nodeVersion     = pkgJson.engines.node
-rnVersion       = pkgJson.dependencies['react-native']
 resources       = __dirname + '/resources/'
 camelRx         = /([a-z])([A-Z])/g
 projNameRx      = /\$PROJECT_NAME\$/g
 projNameHyphRx  = /\$PROJECT_NAME_HYPHENATED\$/g
 projNameUnderRx = /\$PROJECT_NAME_UNDERSCORED\$/g
+rnVersion       = '0.11.4'
 podMinVersion   = '0.38.2'
 process.title   = 'natal'
 
@@ -82,9 +81,9 @@ readConfig = ->
 
 getBundleId = (name) ->
   try
-    if line = readFile("iOS/iOS/#{name}.xcodeproj/project.pbxproj").match /PRODUCT_BUNDLE_IDENTIFIER = (.+);/
+    if line = readFile("native/ios/#{name}.xcodeproj/project.pbxproj").match /PRODUCT_BUNDLE_IDENTIFIER = (.+);/
       line[1]
-    else if line = readFile("iOS/iOS/#{name}/Info.plist").match /\<key\>CFBundleIdentifier\<\/key\>\n?\s*\<string\>(.+)\<\/string\>/
+    else if line = readFile("native/ios/#{name}/Info.plist").match /\<key\>CFBundleIdentifier\<\/key\>\n?\s*\<string\>(.+)\<\/string\>/
       rfcIdRx = /\$\(PRODUCT_NAME\:rfc1034identifier\)/
 
       if line[1].match rfcIdRx
@@ -140,12 +139,9 @@ init = (projName) ->
     exec 'lein cljsbuild once dev'
 
     log 'Creating React Native skeleton'
-    fs.mkdirSync 'iOS'
-    process.chdir 'iOS'
-    _log = console.log
-    global.console.log = ->
-    reactInit '.', projName
-    global.console.log = _log
+    fs.mkdirSync 'native'
+    process.chdir 'native'
+
     fs.writeFileSync 'package.json', JSON.stringify
       name:    projName
       version: '0.0.1'
@@ -155,10 +151,19 @@ init = (projName) ->
       dependencies:
         'react-native': rnVersion
     , null, 2
+
     exec 'npm i'
+    exec "
+         node -e
+         \"process.argv[3]='#{projName}';
+         require('react-native/local-cli/init')('.', '#{projName}')\"
+         "
+
+    exec 'rm -rf android'
+    fs.unlinkSync 'index.android.js'
 
     log 'Installing Pod dependencies'
-    process.chdir 'iOS'
+    process.chdir 'ios'
     exec "cp #{resources}Podfile ."
     exec 'pod install'
 
@@ -194,7 +199,7 @@ init = (projName) ->
         [
           /\/\* End PBXFileReference section \*\//
           "\t\t#{uuid1} /* out */ = {isa = PBXFileReference; lastKnownFileType
-           = folder; name = out; path = ../../../target/out;
+           = folder; name = out; path = ../../target/out;
            sourceTree = \"<group>\"; };\n/* End PBXFileReference section */"
         ]
         [
@@ -269,11 +274,11 @@ init = (projName) ->
 
 
 launch = ({name, device}) ->
-  log 'Building Xcode project'
+  log 'Compiling Xcode project'
   try
     exec "
          xcodebuild
-         -workspace iOS/iOS/#{name}.xcworkspace
+         -workspace native/ios/#{name}.xcworkspace
          -scheme #{name}
          -destination platform='iOS Simulator',OS=latest,id='#{device}'
          clean test
@@ -288,16 +293,16 @@ launch = ({name, device}) ->
 
 openXcode = (name) ->
   try
-    exec "open iOS/iOS/#{name}.xcworkspace"
+    exec "open native/ios/#{name}.xcworkspace"
   catch {message}
     logErr \
       if message.match /ENOENT/i
         """
-        Cannot find #{name}.xcworkspace in iOS/iOS.
+        Cannot find #{name}.xcworkspace in native/ios.
         Run this command from your project's root directory.
         """
       else if message.match /EACCES/i
-        "Invalid permissions for opening #{name}.xcworkspace in iOS/iOS"
+        "Invalid permissions for opening #{name}.xcworkspace in native/ios"
       else
         message
 
