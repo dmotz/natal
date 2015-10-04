@@ -73,7 +73,7 @@ readConfig = ->
         message
 
 
-getBundleId = ({name}) ->
+getBundleId = (name) ->
   try
     if line = readFile("iOS/iOS/#{name}.xcodeproj/project.pbxproj").match /PRODUCT_BUNDLE_IDENTIFIER = (.+);/
       line[1]
@@ -201,11 +201,39 @@ init = (projName) ->
         ]
       ]
 
+    testId = readFile("#{projName}.xcodeproj/project.pbxproj")
+      .match(new RegExp "([0-9A-F]+) \/\\* #{projName}Tests \\*\/ = \\{")[1]
+
+    editSync \
+      "#{projName}.xcodeproj/xcshareddata/xcschemes/#{projName}.xcscheme",
+      [
+        [
+          /\<Testables\>\n\s*\<\/Testables\>/
+          """
+          <Testables>
+             <TestableReference
+                skipped = "NO">
+                <BuildableReference
+                   BuildableIdentifier = "primary"
+                   BlueprintIdentifier = "#{testId}"
+                   BuildableName = "#{projName}Tests.xctest"
+                   BlueprintName = "#{projName}Tests"
+                   ReferencedContainer = "container:#{projName}.xcodeproj">
+                </BuildableReference>
+             </TestableReference>
+          </Testables>
+          """
+        ]
+      ]
+
     log 'Creating Natal config'
     process.chdir '../..'
-    writeConfig
+    config =
       name:   projName
       device: pluckUuid getDeviceList().find (line) -> /iPhone 6/.test line
+
+    writeConfig config
+    launch config
 
     log '\nWhen Xcode appears, click the play button to run the app on the simulator.', 'yellow'
     log 'Then run the following for an interactive workflow:', 'yellow'
@@ -231,6 +259,24 @@ init = (projName) ->
         'Watchman is required (https://facebook.github.io/watchman)'
       else
         message
+
+
+launch = ({name, device}) ->
+  log 'Building Xcode project'
+  try
+    execSync "
+             xcodebuild
+             -workspace iOS/iOS/#{name}.xcworkspace
+             -scheme #{name}
+             -destination platform='iOS Simulator',OS=latest,id='#{device}'
+             clean test
+             ", stdio: 'ignore'
+
+    log 'Launching simulator'
+    execSync "xcrun simctl launch #{device} #{getBundleId name}", stdio: 'ignore'
+
+  catch {message}
+    logErr message
 
 
 openXcode = (name) ->
