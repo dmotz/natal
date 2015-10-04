@@ -44,7 +44,7 @@ readFile = (path) ->
   fs.readFileSync path, encoding: 'ascii'
 
 
-editSync = (path, pairs) ->
+edit = (path, pairs) ->
   fs.writeFileSync path, pairs.reduce (contents, [rx, replacement]) ->
     contents.replace rx, replacement
   , readFile path
@@ -127,14 +127,14 @@ init = (projName) ->
     log 'Updating Leiningen project'
     process.chdir projNameHyph
     exec "cp #{resources}project.clj project.clj"
-    editSync 'project.clj', [[projNameHyphRx, projNameHyph]]
+    edit 'project.clj', [[projNameHyphRx, projNameHyph]]
     corePath = "src/#{projNameUs}/core.clj"
     fs.unlinkSync corePath
     corePath += 's'
     exec "cp #{resources}core.cljs #{corePath}"
-    editSync corePath, [[projNameHyphRx, projNameHyph], [projNameRx, projName]]
+    edit corePath, [[projNameHyphRx, projNameHyph], [projNameRx, projName]]
     exec "cp #{resources}ambly.sh start.sh"
-    editSync 'start.sh', [[projNameUnderRx, projNameUs]]
+    edit 'start.sh', [[projNameUnderRx, projNameUs]]
 
     log 'Compiling ClojureScript'
     exec 'lein cljsbuild once dev'
@@ -166,7 +166,7 @@ init = (projName) ->
     for ext in ['m', 'h']
       path = "#{projName}/AppDelegate.#{ext}"
       exec "cp #{resources}AppDelegate.#{ext} #{path}"
-      editSync path, [[projNameRx, projName], [projNameHyphRx, projNameHyph]]
+      edit path, [[projNameRx, projName], [projNameHyphRx, projNameHyph]]
 
     uuid1 = crypto
       .createHash 'md5'
@@ -178,7 +178,7 @@ init = (projName) ->
     uuid2.splice 7, 1, ((parseInt(uuid1[7], 16) + 1) % 16).toString(16).toUpperCase()
     uuid2 = uuid2.join ''
 
-    editSync \
+    edit \
       "#{projName}.xcodeproj/project.pbxproj",
       [
         [
@@ -211,7 +211,7 @@ init = (projName) ->
     testId = readFile("#{projName}.xcodeproj/project.pbxproj")
       .match(new RegExp "([0-9A-F]+) \/\\* #{projName}Tests \\*\/ = \\{")[1]
 
-    editSync \
+    edit \
       "#{projName}.xcodeproj/xcshareddata/xcschemes/#{projName}.xcscheme",
       [
         [
