@@ -252,7 +252,7 @@ getDeviceList = ->
     logErr 'Device listing failed: ' + message
 
 
-cli.version '0.0.4'
+cli.version pkgJson.version
 
 cli.command 'init <name>'
   .description 'Create a new ClojureScript React Native project'
