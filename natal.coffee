@@ -112,6 +112,7 @@ init = (projName) ->
     exec 'type lein'
     exec 'type pod'
     exec 'type watchman'
+    exec 'type xcodebuild'
 
     podVersion = exec('pod --version', true).toString().trim()
     unless semver.satisfies podVersion, ">=#{podMinVersion}"
@@ -272,6 +273,8 @@ init = (projName) ->
         'CocoaPods is required (https://cocoapods.org)'
       else if message.match /type\:.+watchman/i
         'Watchman is required (https://facebook.github.io/watchman)'
+      else if message.match /type\:.+xcodebuild/i
+        'Xcode Command Line Tools are required'
       else
         message
 
