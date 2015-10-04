@@ -42,6 +42,10 @@ editSync = (path, pairs) ->
   , readFile path
 
 
+pluckUuid = (line) ->
+  line.match(/\[(.+)\]/)[1]
+
+
 writeConfig = (config) ->
   try
     fs.writeFileSync '.natal', JSON.stringify config, null, 2
@@ -198,7 +202,9 @@ init = (projName) ->
 
     log 'Creating Natal config'
     process.chdir '../..'
-    writeConfig name: projName
+    writeConfig
+      name:   projName
+      device: pluckUuid getDeviceList().find (line) -> /iPhone 6/.test line
 
     log '\nWhen Xcode appears, click the play button to run the app on the simulator.', 'yellow'
     log 'Then run the following for an interactive workflow:', 'yellow'
