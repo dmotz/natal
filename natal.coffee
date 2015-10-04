@@ -376,6 +376,12 @@ cli.command 'launch'
     launch readConfig()
 
 
+cli.command 'repl'
+  .description 'Launch a ClojureScript REPL with background compilation'
+  .action ->
+    startRepl readConfig().name
+
+
 cli.command 'listdevices'
   .description 'List available simulator devices by index'
   .action ->
