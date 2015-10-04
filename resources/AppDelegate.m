@@ -131,7 +131,8 @@ RCT_EXPORT_MODULE()
 
   // Set up a root view using the bridge defined above
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                   moduleName:@"$PROJECT_NAME$"];
+                                                   moduleName:@"$PROJECT_NAME$"
+                                            initialProperties:nil];
 
   // Set up to be notified when the React Native UI is up
   [[NSNotificationCenter defaultCenter] addObserver:self
