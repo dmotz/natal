@@ -319,15 +319,12 @@ cli.command 'init <name>'
 
     init name
 
+
 cli.command 'launch'
   .description 'Run project in simulator and start REPL'
   .action ->
     launch readConfig()
 
-cli.command 'xcode'
-  .description 'Open Xcode project'
-  .action ->
-    openXcode readConfig().name
 
 cli.command 'listdevices'
   .description 'List available simulator devices by index'
@@ -335,6 +332,7 @@ cli.command 'listdevices'
     console.log (getDeviceList()
       .map (line, i) -> "#{i}\t#{line.replace /\[.+\]/, ''}"
       .join '\n')
+
 
 cli.command 'setdevice <index>'
   .description 'Choose simulator device by index'
@@ -345,6 +343,13 @@ cli.command 'setdevice <index>'
     config = readConfig()
     config.device = pluckUuid device
     writeConfig config
+
+
+cli.command 'xcode'
+  .description 'Open Xcode project'
+  .action ->
+    openXcode readConfig().name
+
 
 cli.on '*', (command) ->
   logErr "Unknown command #{command[0]}. See natal --help for valid commands"
