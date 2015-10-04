@@ -81,9 +81,14 @@ readConfig = ->
 
 getBundleId = (name) ->
   try
-    if line = readFile("native/ios/#{name}.xcodeproj/project.pbxproj").match /PRODUCT_BUNDLE_IDENTIFIER = (.+);/
+    if line = readFile "native/ios/#{name}.xcodeproj/project.pbxproj"
+         .match /PRODUCT_BUNDLE_IDENTIFIER = (.+);/
+
       line[1]
-    else if line = readFile("native/ios/#{name}/Info.plist").match /\<key\>CFBundleIdentifier\<\/key\>\n?\s*\<string\>(.+)\<\/string\>/
+
+    else if line = readFile "native/ios/#{name}/Info.plist"
+              .match /\<key\>CFBundleIdentifier\<\/key\>\n?\s*\<string\>(.+)\<\/string\>/
+
       rfcIdRx = /\$\(PRODUCT_NAME\:rfc1034identifier\)/
 
       if line[1].match rfcIdRx
