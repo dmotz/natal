@@ -17,8 +17,7 @@
     "semver": "^5.0.1"
   },
   "engines": {
-    "node": ">=0.12.x",
-    "iojs": ">=3.1.x"
+    "node": ">=4.0.0"
   },
   "repository": {
     "type": "git",
