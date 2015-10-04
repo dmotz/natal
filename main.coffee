@@ -280,7 +280,7 @@ cli.command 'listdevices'
   .description 'List available simulator devices by index'
   .action ->
     console.log (getDeviceList()
-      .map (line, i) -> "#{i}\t#{line}"
+      .map (line, i) -> "#{i}\t#{line.replace /\[.+\]/, ''}"
       .join '\n')
 
 
