@@ -93,7 +93,7 @@ tools.
 
 ## Aspirations
 - [ ] Automatic wrapping of all React Native component functions for ClojureScript
-- [ ] Xcode-free development with CLI tools
+- [x] Xcode-free development with CLI tools
 - [ ] Automatically run React packager in background
 - [ ] Automatically tail cljs build log and report compile errors
 - [ ] Templates for other ClojureScript React wrappers
