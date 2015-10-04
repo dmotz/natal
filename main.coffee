@@ -299,6 +299,9 @@ cli.command 'setdevice <index>'
     config.device = pluckUuid device
     writeConfig config
 
+cli.on '*', (command) ->
+  logErr "Unknown command #{command[0]}. See natal --help for valid commands"
+
 
 unless semver.satisfies process.version[1...], nodeVersion
   logErr """
