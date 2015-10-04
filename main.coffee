@@ -290,4 +290,7 @@ unless semver.satisfies process.version[1...], nodeVersion
          You have #{process.version[1...]}
          """
 
-cli.parse process.argv
+if process.argv.length <= 2
+  cli.outputHelp()
+else
+  cli.parse process.argv
