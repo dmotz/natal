@@ -68,6 +68,25 @@ readConfig = ->
         message
 
 
+getBundleId = ({name}) ->
+  try
+    if line = readFile("iOS/iOS/#{name}.xcodeproj/project.pbxproj").match /PRODUCT_BUNDLE_IDENTIFIER = (.+);/
+      line[1]
+    else if line = readFile("iOS/iOS/#{name}/Info.plist").match /\<key\>CFBundleIdentifier\<\/key\>\n?\s*\<string\>(.+)\<\/string\>/
+      rfcIdRx = /\$\(PRODUCT_NAME\:rfc1034identifier\)/
+
+      if line[1].match rfcIdRx
+        line[1].replace rfcIdRx, name
+      else
+        line[1]
+
+    else
+      throw new Error 'Cannot find bundle identifier in project.pbxproj or Info.plist'
+
+  catch {message}
+    logErr message
+
+
 init = (projName) ->
   projNameHyph = projName.replace(camelRx, '$1-$2').toLowerCase()
   projNameUs   = projName.replace(camelRx, '$1_$2').toLowerCase()
