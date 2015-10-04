@@ -312,6 +312,7 @@ getDeviceList = ->
     logErr 'Device listing failed: ' + message
 
 
+cli._name = 'natal'
 cli.version pkgJson.version
 
 cli.command 'init <name>'
