@@ -13,7 +13,6 @@
     "chalk": "^1.1.1",
     "coffee-script": "^1.9.3",
     "commander": "^2.8.1",
-    "react-native": "^0.10.1",
     "semver": "^5.0.1"
   },
   "engines": {
