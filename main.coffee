@@ -21,6 +21,7 @@ projNameRx      = /\$PROJECT_NAME\$/g
 projNameHyphRx  = /\$PROJECT_NAME_HYPHENATED\$/g
 projNameUnderRx = /\$PROJECT_NAME_UNDERSCORED\$/g
 podMinVersion   = '0.38.2'
+process.title   = 'natal'
 
 
 log = (s, color = 'green') ->
