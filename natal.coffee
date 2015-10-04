@@ -4,13 +4,13 @@
 # http://oxism.com
 # MIT License
 
-fs         = require 'fs'
-crypto     = require 'crypto'
-{execSync} = require 'child_process'
-cli        = require 'commander'
-chalk      = require 'chalk'
-semver     = require 'semver'
-pkgJson    = require __dirname + '/package.json'
+fs      = require 'fs'
+crypto  = require 'crypto'
+child   = require 'child_process'
+cli     = require 'commander'
+chalk   = require 'chalk'
+semver  = require 'semver'
+pkgJson = require __dirname + '/package.json'
 
 nodeVersion     = pkgJson.engines.node
 resources       = __dirname + '/resources/'
@@ -34,9 +34,9 @@ logErr = (err, color = 'red') ->
 
 exec = (cmd, keepOutput) ->
   if keepOutput
-    execSync cmd
+    child.execSync cmd
   else
-    execSync cmd, stdio: 'ignore'
+    child.execSync cmd, stdio: 'ignore'
 
 
 readFile = (path) ->
@@ -315,6 +315,43 @@ getDeviceList = ->
       .filter (line) -> /^i/.test line
   catch {message}
     logErr 'Device listing failed: ' + message
+
+
+startRepl = (name) ->
+  log 'Starting REPL'
+  hasRlwrap =
+    try
+      exec 'type rlwrap'
+      true
+    catch
+      log '
+          Warning: rlwrap is not installed.\nInstall it to make the REPL a much
+          better experience with arrow key support.
+          ', 'red'
+      false
+
+  try
+    lein = child.spawn (if hasRlwrap then 'rlwrap' else 'lein'),
+      "#{if hasRlwrap then 'lein ' else ''}trampoline run -m clojure.main -e"
+        .split(' ').concat(
+          """
+          (require '[cljs.repl :as repl])
+          (require '[ambly.core :as ambly])
+          (let [repl-env (ambly.core/repl-env)]
+          (cljs.repl/repl repl-env
+            :watch \"src\"
+            :watch-fn
+              (fn []
+                (cljs.repl/load-file repl-env
+                  \"src/#{name}/core.cljs\"))
+            :analyze-path \"src\"))
+          """),
+      cwd:   process.cwd()
+      env:   process.env
+      stdio: 'inherit'
+
+  catch {message}
+    logErr message
 
 
 cli._name = 'natal'
