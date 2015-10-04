@@ -17,8 +17,8 @@ on setting up a ClojureScript React Native app.
 
 ## Usage
 
-Before getting started, make sure you have npm, Leiningen, and CocoaPods (>=0.36.4)
-installed.
+Before getting started, make sure you have the
+[required dependencies](#dependencies) installed.
 
 Then, install the CLI using npm:
 
@@ -72,6 +72,23 @@ a much nicer experience with arrow keys
 - Don't press ⌘-R in the simulator; code changes should be reflected automatically.
 See [this issue](https://github.com/omcljs/ambly/issues/97) in Ambly for details
 - Running multiple React Native apps at once can cause problems
+
+
+## Dependencies
+As Natal is the orchestration of many individual tools, there are quite a few dependencies.
+If you've previously done React Native or Clojure development, you should hopefully
+have most installed already. Platform dependencies are listed under their respective
+tools.
+
+- [npm](https://www.npmjs.com) `>=1.4`
+    - [Node.js](https://nodejs.org) `>=4.0.0`
+- [Leiningen](http://leiningen.org) `>=2.5.3`
+    - [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+- [CocoaPods](https://cocoapods.org) `>=0.38.2`
+    - [Ruby](https://www.ruby-lang.org) `>=2.0.0`
+- [Xcode](https://developer.apple.com/xcode) `>=6.3`
+    - [OS X](http://www.apple.com/osx) `>=10.10`
+- [Watchman](https://facebook.github.io/watchman) `>=3.7.0`
 
 
 ## Aspirations
