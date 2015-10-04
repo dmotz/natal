@@ -32,10 +32,14 @@ logErr = (err, color = 'red') ->
   process.exit 1
 
 
+readFile = (path) ->
+  fs.readFileSync path, encoding: 'ascii'
+
+
 editSync = (path, pairs) ->
   fs.writeFileSync path, pairs.reduce (contents, [rx, replacement]) ->
     contents.replace rx, replacement
-  , fs.readFileSync path, encoding: 'ascii'
+  , readFile path
 
 
 writeConfig = (config) ->
@@ -51,7 +55,7 @@ writeConfig = (config) ->
 
 readConfig = ->
   try
-    JSON.parse fs.readFileSync '.natal'
+    JSON.parse readFile '.natal'
   catch {message}
     logErr \
       if message.match /ENOENT/i
