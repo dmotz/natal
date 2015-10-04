@@ -289,6 +289,16 @@ cli.command 'listdevices'
       .map (line, i) -> "#{i}\t#{line.replace /\[.+\]/, ''}"
       .join '\n')
 
+cli.command 'setdevice <index>'
+  .description 'Choose simulator device by index'
+  .action (index) ->
+    unless device = getDeviceList()[parseInt index, 10]
+      logErr 'Invalid device index. Run natal listdevices for valid indexes.'
+
+    config = readConfig()
+    config.device = pluckUuid device
+    writeConfig config
+
 
 unless semver.satisfies process.version[1...], nodeVersion
   logErr """
