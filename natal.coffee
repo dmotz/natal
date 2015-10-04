@@ -132,8 +132,6 @@ init = (projName) ->
     corePath += 's'
     exec "cp #{resources}core.cljs #{corePath}"
     edit corePath, [[projNameHyphRx, projNameHyph], [projNameRx, projName]]
-    exec "cp #{resources}ambly.sh start.sh"
-    edit 'start.sh', [[projNameUnderRx, projNameUs]]
 
     log 'Compiling ClojureScript'
     exec 'lein cljsbuild once dev'
