@@ -89,6 +89,9 @@ index of the device on the list.
 
 - To change advanced settings run `natal xcode` to quickly open the Xcode project.
 
+- The Xcode-free workflow is for convenience. If you're encountering app crashes,
+you should open the Xcode project and run it from there to view errors.
+
 
 ## Dependencies
 As Natal is the orchestration of many individual tools, there are quite a few dependencies.
