@@ -18,7 +18,7 @@ camelRx         = /([a-z])([A-Z])/g
 projNameRx      = /\$PROJECT_NAME\$/g
 projNameHyphRx  = /\$PROJECT_NAME_HYPHENATED\$/g
 projNameUnderRx = /\$PROJECT_NAME_UNDERSCORED\$/g
-rnVersion       = '0.11.4'
+rnVersion       = '0.12.0'
 podMinVersion   = '0.38.2'
 process.title   = 'natal'
 
