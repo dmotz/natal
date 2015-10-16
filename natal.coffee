@@ -292,7 +292,7 @@ launch = ({name, device}) ->
          -workspace native/ios/#{name}.xcworkspace
          -scheme #{name}
          -destination platform='iOS Simulator',OS=latest,id='#{device}'
-         clean test
+         test
          "
 
     log 'Launching simulator'
