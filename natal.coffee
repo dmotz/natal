@@ -77,6 +77,16 @@ checkPort = (port, cb) ->
     cb false
 
 
+ensureFreePort = (cb) ->
+  checkPort rnPackagerPort, (inUse) ->
+    if inUse
+      logErr "
+             Port #{rnPackagerPort} is currently in use by another process
+             and is needed by the React Native packager.
+             "
+    cb()
+
+
 writeConfig = (config) ->
   try
     fs.writeFileSync '.natal', JSON.stringify config, null, 2
@@ -402,13 +412,13 @@ cli.command 'init <name>'
              natal init HelloWorld
              '''
 
-    init name
+    ensureFreePort -> init name
 
 
 cli.command 'launch'
   .description 'Compile project and run in simulator'
   .action ->
-    launch readConfig()
+    ensureFreePort -> launch readConfig()
 
 
 cli.command 'repl'
