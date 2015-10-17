@@ -53,6 +53,10 @@ pluckUuid = (line) ->
   line.match(/\[(.+)\]/)[1]
 
 
+toUnderscored = (s) ->
+  s.replace(camelRx, '$1_$2').toLowerCase()
+
+
 writeConfig = (config) ->
   try
     fs.writeFileSync '.natal', JSON.stringify config, null, 2
@@ -105,7 +109,7 @@ getBundleId = (name) ->
 
 init = (projName) ->
   projNameHyph = projName.replace(camelRx, '$1-$2').toLowerCase()
-  projNameUs   = projName.replace(camelRx, '$1_$2').toLowerCase()
+  projNameUs   = toUnderscored projName
 
   try
     log "Creating #{projName}", 'bgMagenta'
@@ -354,7 +358,7 @@ startRepl = (name) ->
             :watch-fn
               (fn []
                 (cljs.repl/load-file repl-env
-                  \"src/#{name}/core.cljs\"))
+                  \"src/#{toUnderscored name}/core.cljs\"))
             :analyze-path \"src\"))
           """),
       cwd:   process.cwd()
