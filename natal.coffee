@@ -5,6 +5,8 @@
 # MIT License
 
 fs      = require 'fs'
+net     = require 'net'
+http    = require 'http'
 crypto  = require 'crypto'
 child   = require 'child_process'
 cli     = require 'commander'
@@ -19,6 +21,7 @@ projNameRx      = /\$PROJECT_NAME\$/g
 projNameHyphRx  = /\$PROJECT_NAME_HYPHENATED\$/g
 projNameUnderRx = /\$PROJECT_NAME_UNDERSCORED\$/g
 rnVersion       = '0.13.0-rc'
+rnPackagerPort  = 8081
 podMinVersion   = '0.38.2'
 process.title   = 'natal'
 
@@ -55,6 +58,23 @@ pluckUuid = (line) ->
 
 toUnderscored = (s) ->
   s.replace(camelRx, '$1_$2').toLowerCase()
+
+
+checkPort = (port, cb) ->
+  sock = net.connect {port}, ->
+    sock.end()
+    req = http.get "http://localhost:#{port}/status", (res) ->
+      data = ''
+      res.on 'data', (chunk) -> data += chunk
+      res.on 'end', ->
+        cb data.toString() isnt 'packager-status:running'
+
+    .on 'error', -> cb true
+    .setTimeout 3000
+
+  sock.on 'error', ->
+    sock.end()
+    cb false
 
 
 writeConfig = (config) ->
