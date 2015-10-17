@@ -97,7 +97,7 @@ RCT_EXPORT_MODULE()
    * on the same Wi-Fi network.
    */
 
-  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle"];
+  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
 
   /**
    * OPTION 2
@@ -131,7 +131,8 @@ RCT_EXPORT_MODULE()
 
   // Set up a root view using the bridge defined above
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-                                                   moduleName:@"$PROJECT_NAME$"];
+                                                   moduleName:@"$PROJECT_NAME$"
+                                            initialProperties:nil];
 
   // Set up to be notified when the React Native UI is up
   [[NSNotificationCenter defaultCenter] addObserver:self

@@ -11,7 +11,7 @@ setting up a React Native app running on ClojureScript.
 It stands firmly on the shoulders of giants, specifically those of
 [Mike Fikes](http://blog.fikesfarm.com) who created
 [Ambly](https://github.com/omcljs/ambly) and the
-[documentation](https://github.com/omcljs/ambly/wiki/ClojureScript-React-Native-Quick-Start)
+[documentation](http://cljsrn.org/ambly.html)
 on setting up a ClojureScript React Native app.
 
 
@@ -26,31 +26,34 @@ Then, install the CLI using npm:
 $ npm install -g natal
 ```
 
-Then run `natal` with your app's name as the first argument:
+To bootstrap a new app, run `natal init` with your app's name as an argument:
 
 ```
-$ natal FutureApp
+$ natal init FutureApp
 ```
 
-If your app is more than a single word, be sure to type it in CamelCase.
+If your app's name is more than a single word, be sure to type it in CamelCase.
 A corresponding hyphenated Clojure namespace will be created.
 
-When Xcode appears, click the play button (or ⌘-R) to run the app on the simulator.
+If all goes well your app should compile and boot in the simulator.
 
-Then run the following for an interactive workflow:
+From there you can begin an interactive workflow by starting the REPL.
 
 ```
 $ cd future-app
-$ ./start.sh
+$ natal repl
 ```
 
-First, choose the correct device (probably `[1]`). At the REPL prompt type this:
+Choose your app from the list the REPL outputs (probably `1`) so Ambly can connect.
+
+At the prompt, try loading your app's namespace:
 
 ```clojure
 (in-ns 'future-app.core)
 ```
 
-Changes you make via the REPL or by changing your .cljs files should appear live.
+Changes you make via the REPL or by changing your `.cljs` files should appear live
+in the simulator.
 
 Try this command as an example:
 
@@ -58,8 +61,8 @@ Try this command as an example:
 (swap! app-state assoc :text "Hello Native World")
 ```
 
-When the REPL starts it will print the location of its compilation log.
-It's useful to tail it to see any errors, like so:
+When the REPL connects to the simulator it will print the location of its
+compilation log. It's useful to tail it to see any errors, like so:
 
 ```
 $ tail -f /Volumes/Ambly-81C53995/watch.log
@@ -67,11 +70,27 @@ $ tail -f /Volumes/Ambly-81C53995/watch.log
 
 
 ## Tips
-- Having `rlwrap` installed is optional but recommended since it makes the REPL
-a much nicer experience with arrow keys
+- Having `rlwrap` installed is optional but highly recommended since it makes
+the REPL a much nicer experience with arrow keys.
+
 - Don't press ⌘-R in the simulator; code changes should be reflected automatically.
-See [this issue](https://github.com/omcljs/ambly/issues/97) in Ambly for details
-- Running multiple React Native apps at once can cause problems
+See [this issue](https://github.com/omcljs/ambly/issues/97) in Ambly for details.
+
+- Running multiple React Native apps at once can cause problems with the React
+Packager so try to avoid doing so.
+
+- You can launch your app on the simulator without opening Xcode by running
+`natal launch` in your app's root directory.
+
+- By default new Natal projects will launch on the iPhone 6 simulator. To change
+which device `natal launch` uses, you can run `natal listdevices` to see a list
+of available simulators, then select one by running `natal setdevice` with the
+index of the device on the list.
+
+- To change advanced settings run `natal xcode` to quickly open the Xcode project.
+
+- The Xcode-free workflow is for convenience. If you're encountering app crashes,
+you should open the Xcode project and run it from there to view errors.
 
 
 ## Dependencies
@@ -86,17 +105,21 @@ tools.
     - [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 - [CocoaPods](https://cocoapods.org) `>=0.38.2`
     - [Ruby](https://www.ruby-lang.org) `>=2.0.0`
-- [Xcode](https://developer.apple.com/xcode) `>=6.3`
+- [Xcode](https://developer.apple.com/xcode) (+ Command Line Tools) `>=6.3`
     - [OS X](http://www.apple.com/osx) `>=10.10`
 - [Watchman](https://facebook.github.io/watchman) `>=3.7.0`
 
 
 ## Aspirations
+- [x] Xcode-free workflow with CLI tools
 - [ ] Automatic wrapping of all React Native component functions for ClojureScript
-- [ ] Xcode-free development with CLI tools
 - [ ] Automatically run React packager in background
 - [ ] Automatically tail cljs build log and report compile errors
 - [ ] Templates for other ClojureScript React wrappers
+- [ ] Automatic bundling for offline device usage and App Store distribution
+- [ ] Android support
 
 
 Contributions are welcome.
+
+For more ClojureScript React Native resources visit [cljsrn.org](http://cljsrn.org).
