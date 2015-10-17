@@ -32,7 +32,7 @@ To bootstrap a new app, run `natal init` with your app's name as an argument:
 $ natal init FutureApp
 ```
 
-If your app is more than a single word, be sure to type it in CamelCase.
+If your app's name is more than a single word, be sure to type it in CamelCase.
 A corresponding hyphenated Clojure namespace will be created.
 
 If all goes well your app should compile and boot in the simulator.
@@ -121,3 +121,5 @@ tools.
 
 
 Contributions are welcome.
+
+For more ClojureScript React Native resources visit [cljsrn.org](http://cljsrn.org).
