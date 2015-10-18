@@ -306,13 +306,13 @@ init = (projName) ->
 
   catch {message}
     logErr \
-      if message.match /type\:.+lein/i
+      if message.match /type.+lein/i
         'Leiningen is required (http://leiningen.org)'
-      else if message.match /type\:.+pod/i
+      else if message.match /type.+pod/i
         'CocoaPods is required (https://cocoapods.org)'
-      else if message.match /type\:.+watchman/i
+      else if message.match /type.+watchman/i
         'Watchman is required (https://facebook.github.io/watchman)'
-      else if message.match /type\:.+xcodebuild/i
+      else if message.match /type.+xcodebuild/i
         'Xcode Command Line Tools are required'
       else
         message
