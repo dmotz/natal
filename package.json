@@ -1,6 +1,6 @@
 {
   "name": "natal",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Bootstrap ClojureScript React Native apps",
   "main": "index.js",
   "author": {
