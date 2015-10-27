@@ -17,17 +17,17 @@
 
 
 ;; Set up our Om UI
-(defonce app-state (atom {:app/text "Welcome to $PROJECT_NAME$"}))
+(defonce app-state (atom {:app/msg "Welcome to $PROJECT_NAME$"}))
 
 (defui WidgetComponent
   static om/IQuery
   (query [this]
-         '[:app/text])
+         '[:app/msg])
   Object
   (render [this]
-          (let [{:keys [app/text]} (om/props this)]
+          (let [{:keys [app/msg]} (om/props this)]
             (view {:style {:flexDirection "column" :margin 40}}
-                  (text nil text)))))
+                  (text nil msg)))))
 
 ;; om.next parser
 (defmulti read om/dispatch)
