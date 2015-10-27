@@ -42,10 +42,11 @@
 (def reconciler
   (om/reconciler
    {:state app-state
-    :parser (om/parser {:read read})}))
+    :parser (om/parser {:read read})
+    :root-render #(.render js/React %1 %2)
+    :root-unmount #(.unmountComponentAtNode js/React %)}))
 
-
-(om/add-root! reconciler WidgetComponent {:target 1})
+(om/add-root! reconciler WidgetComponent 1)
 
 (defn ^:export init []
   ((fn render []
