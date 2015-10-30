@@ -422,19 +422,19 @@ cli.command 'init <name>'
 
 
 cli.command 'launch'
-  .description 'Compile project and run in simulator'
+  .description 'compile project and run in simulator'
   .action ->
     ensureFreePort -> launch readConfig()
 
 
 cli.command 'repl'
-  .description 'Launch a ClojureScript REPL with background compilation'
+  .description 'launch a ClojureScript REPL with background compilation'
   .action ->
     startRepl readConfig().name
 
 
 cli.command 'listdevices'
-  .description 'List available simulator devices by index'
+  .description 'list available simulator devices by index'
   .action ->
     console.log (getDeviceList()
       .map (line, i) -> "#{i}\t#{line.replace /\[.+\]/, ''}"
@@ -442,7 +442,7 @@ cli.command 'listdevices'
 
 
 cli.command 'setdevice <index>'
-  .description 'Choose simulator device by index'
+  .description 'choose simulator device by index'
   .action (index) ->
     unless device = getDeviceList()[parseInt index, 10]
       logErr 'Invalid device index. Run natal listdevices for valid indexes.'
@@ -453,13 +453,13 @@ cli.command 'setdevice <index>'
 
 
 cli.command 'xcode'
-  .description 'Open Xcode project'
+  .description 'open Xcode project'
   .action ->
     openXcode readConfig().name
 
 
 cli.on '*', (command) ->
-  logErr "Unknown command #{command[0]}. See natal --help for valid commands"
+  logErr "unknown command #{command[0]}. See natal --help for valid commands"
 
 
 unless semver.satisfies process.version[1...], nodeVersion
