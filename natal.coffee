@@ -413,8 +413,17 @@ cli._name = 'natal'
 cli.version pkgJson.version
 
 cli.command 'init <name>'
-  .description 'Create a new ClojureScript React Native project'
-  .action (name) ->
+  .description 'create a new ClojureScript React Native project'
+  .option "-l, --lib [#{libNames.join ' '}]", 'specify React wrapper library'
+  .action (name, cmd) ->
+    if cmd
+      lib = cmd.lib or defaultLib
+    else
+      lib = defaultLib
+
+    unless reactLibs[lib]
+      logErr "Unsupported React wrapper library: #{lib}"
+
     if typeof name isnt 'string'
       logErr '''
              natal init requires a project name as the first argument.
@@ -422,7 +431,7 @@ cli.command 'init <name>'
              natal init HelloWorld
              '''
 
-    ensureFreePort -> init name
+    ensureFreePort -> init name, lib
 
 
 cli.command 'launch'
