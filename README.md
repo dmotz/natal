@@ -123,10 +123,10 @@ tools.
 
 ## Aspirations
 - [x] Xcode-free workflow with CLI tools
+- [x] Templates for other ClojureScript React wrappers
 - [ ] Automatic wrapping of all React Native component functions for ClojureScript
 - [ ] Automatically run React packager in background
 - [ ] Automatically tail cljs build log and report compile errors
-- [ ] Templates for other ClojureScript React wrappers
 - [ ] Working dev tools
 - [ ] Automatic bundling for offline device usage and App Store distribution
 - [ ] Android support
