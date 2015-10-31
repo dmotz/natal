@@ -144,7 +144,7 @@ getBundleId = (name) ->
     logErr message
 
 
-init = (projName) ->
+init = (projName, lib) ->
   projNameHyph = projName.replace(camelRx, '$1-$2').toLowerCase()
   projNameUs   = toUnderscored projName
 
@@ -173,11 +173,14 @@ init = (projName) ->
     log 'Updating Leiningen project'
     process.chdir projNameHyph
     exec "cp #{resources}project.clj project.clj"
-    edit 'project.clj', [[projNameHyphRx, projNameHyph]]
+    edit \
+      'project.clj',
+      [[projNameHyphRx, projNameHyph], [/\$CLJS_REACT_LIB\$/, reactLibs[lib]]]
+
     corePath = "src/#{projNameUs}/core.clj"
     fs.unlinkSync corePath
     corePath += 's'
-    exec "cp #{resources}core.cljs #{corePath}"
+    exec "cp #{resources}#{lib}.cljs #{corePath}"
     edit corePath, [[projNameHyphRx, projNameHyph], [projNameRx, projName]]
 
     log 'Compiling ClojureScript'
