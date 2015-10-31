@@ -25,12 +25,12 @@ rnPackagerPort  = 8081
 podMinVersion   = '0.38.2'
 process.title   = 'natal'
 
-reactLibs =
+reactInterfaces =
   om:        'org.omcljs/om "0.9.0"'
   'om-next': 'org.omcljs/om "1.0.0-alpha11"'
 
-libNames   = Object.keys reactLibs
-defaultLib = 'om'
+interfaceNames   = Object.keys reactInterfaces
+defaultInterface = 'om'
 
 
 log = (s, color = 'green') ->
@@ -144,7 +144,7 @@ getBundleId = (name) ->
     logErr message
 
 
-init = (projName, lib) ->
+init = (projName, interfaceName) ->
   projNameHyph = projName.replace(camelRx, '$1-$2').toLowerCase()
   projNameUs   = toUnderscored projName
 
@@ -175,12 +175,15 @@ init = (projName, lib) ->
     exec "cp #{resources}project.clj project.clj"
     edit \
       'project.clj',
-      [[projNameHyphRx, projNameHyph], [/\$CLJS_REACT_LIB\$/, reactLibs[lib]]]
+      [
+        [projNameHyphRx, projNameHyph]
+        [/\$REACT_INTERFACE\$/, reactInterfaces[interfaceName]]
+      ]
 
     corePath = "src/#{projNameUs}/core.clj"
     fs.unlinkSync corePath
     corePath += 's'
-    exec "cp #{resources}#{lib}.cljs #{corePath}"
+    exec "cp #{resources}#{interfaceName}.cljs #{corePath}"
     edit corePath, [[projNameHyphRx, projNameHyph], [projNameRx, projName]]
 
     log 'Compiling ClojureScript'
@@ -414,15 +417,15 @@ cli.version pkgJson.version
 
 cli.command 'init <name>'
   .description 'create a new ClojureScript React Native project'
-  .option "-l, --lib [#{libNames.join ' '}]", 'specify React wrapper library'
+  .option "-i, --interface [#{interfaceNames.join ' '}]", 'specify React interface'
   .action (name, cmd) ->
     if cmd
-      lib = cmd.lib or defaultLib
+      interfaceName = cmd['interface'] or defaultInterface
     else
-      lib = defaultLib
+      interfaceName = defaultInterface
 
-    unless reactLibs[lib]
-      logErr "Unsupported React wrapper library: #{lib}"
+    unless reactInterfaces[interfaceName]
+      logErr "Unsupported React interface: #{interfaceName}"
 
     if typeof name isnt 'string'
       logErr '''
@@ -431,7 +434,7 @@ cli.command 'init <name>'
              natal init HelloWorld
              '''
 
-    ensureFreePort -> init name, lib
+    ensureFreePort -> init name, interfaceName
 
 
 cli.command 'launch'
