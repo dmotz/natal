@@ -25,11 +25,12 @@ rnPackagerPort  = 8081
 podMinVersion   = '0.38.2'
 process.title   = 'natal'
 
-wrapperLibs =
+reactLibs =
   om:        'org.omcljs/om "0.9.0"'
   'om-next': 'org.omcljs/om "1.0.0-alpha11"'
 
-libNames = Object.keys wrapperLibs
+libNames   = Object.keys reactLibs
+defaultLib = 'om'
 
 
 log = (s, color = 'green') ->
