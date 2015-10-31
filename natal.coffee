@@ -24,13 +24,15 @@ rnVersion       = '0.13.0'
 rnPackagerPort  = 8081
 podMinVersion   = '0.38.2'
 process.title   = 'natal'
-
 reactInterfaces =
   om:        'org.omcljs/om "0.9.0"'
   'om-next': 'org.omcljs/om "1.0.0-alpha11"'
 
 interfaceNames   = Object.keys reactInterfaces
 defaultInterface = 'om'
+sampleCommands   =
+  om:        '(swap! app-state assoc :text "Hello Native World")'
+  'om-next': '(swap! app-state assoc :app/msg "Hello Native World")'
 
 
 log = (s, color = 'green') ->
@@ -312,7 +314,7 @@ init = (projName, interfaceName) ->
     log 'Changes you make via the REPL or by changing your .cljs files should appear live.', 'yellow'
     log ''
     log 'Try this command as an example:', 'yellow'
-    log '(swap! app-state assoc :text "Hello Native World")', 'inverse'
+    log sampleCommands[interfaceName], 'inverse'
     log ''
     log '✔ Done', 'bgMagenta'
     log ''
