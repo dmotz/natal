@@ -34,7 +34,6 @@
 (defmethod read :default
   [{:keys [state]} k _]
   (let [st @state]
-    (find st k)
     (if-let [[_ v] (find st k)]
       {:value v}
       {:value :not-found})))
