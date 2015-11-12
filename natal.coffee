@@ -16,6 +16,7 @@ pkgJson = require __dirname + '/package.json'
 
 nodeVersion     = pkgJson.engines.node
 resources       = __dirname + '/resources/'
+validNameRx     = /^[A-Z][0-9A-Z]*$/i
 camelRx         = /([a-z])([A-Z])/g
 projNameRx      = /\$PROJECT_NAME\$/g
 projNameHyphRx  = /\$PROJECT_NAME_HYPHENATED\$/g
@@ -147,6 +148,9 @@ getBundleId = (name) ->
 
 
 init = (projName, interfaceName) ->
+  if projName.toLowerCase() is 'react' or !projName.match validNameRx
+    logErr 'Invalid project name. Use an alphanumeric CamelCase name.'
+
   projNameHyph = projName.replace(camelRx, '$1-$2').toLowerCase()
   projNameUs   = toUnderscored projName
 
