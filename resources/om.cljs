@@ -24,7 +24,7 @@
     om/IRender
     (render [this]
       (view {:style {:flexDirection "column" :margin 40}}
-        (text nil (:text data))))))
+        (text {:style {:fontSize 50 :fontWeight "100"}} (:text data))))))
 
 (om/root widget app-state {:target 1})
 

@@ -27,7 +27,7 @@
   (render [this]
           (let [{:keys [app/msg]} (om/props this)]
             (view {:style {:flexDirection "column" :margin 40}}
-                  (text nil msg)))))
+                  (text {:style {:fontSize 50 :fontWeight "100"}} msg)))))
 
 ;; om.next parser
 (defmulti read om/dispatch)
