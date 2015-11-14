@@ -104,6 +104,16 @@ ensureFreePort = (cb) ->
     cb()
 
 
+generateConfig = (name) ->
+  log 'Creating Natal config'
+  config =
+    name:   name
+    device: getUuidForDevice 'iPhone 6s'
+
+  writeConfig config
+  config
+
+
 writeConfig = (config) ->
   try
     fs.writeFileSync '.natal', JSON.stringify config, null, 2
@@ -299,14 +309,8 @@ init = (projName, interfaceName) ->
         ]
       ]
 
-    log 'Creating Natal config'
     process.chdir '../..'
-    config =
-      name:   projName
-      device: pluckUuid getDeviceList().find (line) -> /iPhone 6/.test line
-
-    writeConfig config
-    launch config
+    launch generateConfig projName
 
     log ''
     log 'To get started with your new app, first cd into its directory:', 'yellow'
