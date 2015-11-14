@@ -318,7 +318,6 @@ init = (projName, interfaceName) ->
     log ''
     log 'Boot the REPL by typing:', 'yellow'
     log 'natal repl', 'inverse'
-    log 'Then choose the correct device to connect to (probably 1).', 'yellow'
     log ''
     log 'At the REPL prompt type this:', 'yellow'
     log "(in-ns '#{projNameHyph}.core)", 'inverse'
