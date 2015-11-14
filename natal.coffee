@@ -65,6 +65,14 @@ pluckUuid = (line) ->
   line.match(/\[(.+)\]/)[1]
 
 
+getUuidForDevice = (deviceName) ->
+  device = getDeviceList().find (line) -> line.match deviceName
+  unless device
+    logErr "Cannot find device `#{deviceName}`"
+
+  pluckUuid device
+
+
 toUnderscored = (s) ->
   s.replace(camelRx, '$1_$2').toLowerCase()
 
