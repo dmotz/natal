@@ -191,9 +191,6 @@ init = (projName, interfaceName) ->
     exec "cp #{resources}#{interfaceName}.cljs #{corePath}"
     edit corePath, [[projNameHyphRx, projNameHyph], [projNameRx, projName]]
 
-    log 'Compiling ClojureScript'
-    exec 'lein cljsbuild once dev'
-
     log 'Creating React Native skeleton'
     fs.mkdirSync 'native'
     process.chdir 'native'
@@ -339,6 +336,9 @@ init = (projName, interfaceName) ->
 
 
 launch = ({name, device}) ->
+  log 'Compiling ClojureScript'
+  exec 'lein cljsbuild once dev'
+
   log 'Compiling Xcode project'
   try
     exec "
