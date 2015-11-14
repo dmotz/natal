@@ -348,6 +348,10 @@ init = (projName, interfaceName) ->
 
 
 launch = ({name, device}) ->
+  unless device in getDeviceUuids()
+    log 'Device ID not available, defaulting to iPhone 6s simulator', 'yellow'
+    {device} = generateConfig name
+
   log 'Compiling ClojureScript'
   exec 'lein cljsbuild once dev'
 
@@ -392,6 +396,10 @@ getDeviceList = ->
       .filter (line) -> /^i/.test line
   catch {message}
     logErr 'Device listing failed: ' + message
+
+
+getDeviceUuids = ->
+  getDeviceList().map (line) -> line.match(/\[(.+)\]/)[1]
 
 
 startRepl = (name) ->
