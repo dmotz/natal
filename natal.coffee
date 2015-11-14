@@ -20,7 +20,6 @@ validNameRx     = /^[A-Z][0-9A-Z]*$/i
 camelRx         = /([a-z])([A-Z])/g
 projNameRx      = /\$PROJECT_NAME\$/g
 projNameHyphRx  = /\$PROJECT_NAME_HYPHENATED\$/g
-projNameUnderRx = /\$PROJECT_NAME_UNDERSCORED\$/g
 rnVersion       = '0.13.0'
 rnPackagerPort  = 8081
 podMinVersion   = '0.38.2'
@@ -73,7 +72,7 @@ toUnderscored = (s) ->
 checkPort = (port, cb) ->
   sock = net.connect {port}, ->
     sock.end()
-    req = http.get "http://localhost:#{port}/status", (res) ->
+    http.get "http://localhost:#{port}/status", (res) ->
       data = ''
       res.on 'data', (chunk) -> data += chunk
       res.on 'end', ->
@@ -395,7 +394,7 @@ startRepl = (name) ->
       false
 
   try
-    lein = child.spawn (if hasRlwrap then 'rlwrap' else 'lein'),
+    child.spawn (if hasRlwrap then 'rlwrap' else 'lein'),
       "#{if hasRlwrap then 'lein ' else ''}trampoline run -m clojure.main -e"
         .split(' ').concat(
           """
