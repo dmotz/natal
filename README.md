@@ -55,7 +55,8 @@ $ cd future-app
 $ natal repl
 ```
 
-Choose your app from the list the REPL outputs (probably `1`) so Ambly can connect.
+If there are no issues, the REPL should connect to the simulator automatically.
+To manually choose which device it connects to, you can run `natal repl --choose`.
 
 At the prompt, try loading your app's namespace:
 
