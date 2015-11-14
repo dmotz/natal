@@ -507,6 +507,20 @@ cli.command 'xcode'
     openXcode readConfig().name
 
 
+cli.command 'deps'
+  .description 'install all dependencies for the project'
+  .action ->
+    try
+      process.chdir 'native'
+      log 'Installing npm packages'
+      exec 'npm i'
+      log 'Installing pods'
+      process.chdir 'ios'
+      exec 'pod install'
+    catch {message}
+      logErr message
+
+
 cli.on '*', (command) ->
   logErr "unknown command #{command[0]}. See natal --help for valid commands"
 
