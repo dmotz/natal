@@ -332,6 +332,8 @@ init = (projName, interfaceName) ->
         'Watchman is required (https://facebook.github.io/watchman)'
       else if message.match /type.+xcodebuild/i
         'Xcode Command Line Tools are required'
+      else if message.match /npm/i
+        "npm install failed. This may be a network issue. Check #{projNameHyph}/native/npm-debug.log for details."
       else
         message
 
