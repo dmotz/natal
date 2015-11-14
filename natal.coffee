@@ -352,6 +352,12 @@ launch = ({name, device}) ->
     log 'Device ID not available, defaulting to iPhone 6s simulator', 'yellow'
     {device} = generateConfig name
 
+  try
+    fs.statSync 'native/node_modules'
+    fs.statSync 'native/ios/Pods'
+  catch
+    logErr 'Dependencies are missing. Run natal deps to install them.'
+
   log 'Compiling ClojureScript'
   exec 'lein cljsbuild once dev'
 
