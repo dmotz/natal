@@ -408,7 +408,7 @@ getDeviceUuids = ->
   getDeviceList().map (line) -> line.match(/\[(.+)\]/)[1]
 
 
-startRepl = (name) ->
+startRepl = (name, autoChoose) ->
   log 'Starting REPL'
   hasRlwrap =
     try
@@ -428,7 +428,7 @@ startRepl = (name) ->
           """
           (require '[cljs.repl :as repl])
           (require '[ambly.core :as ambly])
-          (let [repl-env (ambly.core/repl-env)]
+          (let [repl-env (ambly.core/repl-env#{if autoChoose then ' :choose-first-discovered true' else ''})]
           (cljs.repl/repl repl-env
             :watch \"src\"
             :watch-fn
@@ -478,8 +478,9 @@ cli.command 'launch'
 
 cli.command 'repl'
   .description 'launch a ClojureScript REPL with background compilation'
-  .action ->
-    startRepl readConfig().name
+  .option '-c, --choose', 'choose target device from list'
+  .action (cmd) ->
+    startRepl readConfig().name, !cmd.choose
 
 
 cli.command 'listdevices'
