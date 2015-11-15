@@ -4,11 +4,11 @@
 (ns $PROJECT_NAME_HYPHENATED$.core
   (:require [om.next :as om :refer-macros [defui]]))
 
-;; Reset js/React back as the form above loads in an different React
+;; Reset js/React back as the form above loads in a different React
 (set! js/React (js/require "react-native/Libraries/react-native/react-native.js"))
 
 
-;; Setup some methods to help create React Native elements
+;; Set up some methods to help create React Native elements
 (defn view [opts & children]
   (apply js/React.createElement js/React.View (clj->js opts) children))
 
