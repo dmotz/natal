@@ -136,3 +136,6 @@ tools.
 Contributions are welcome.
 
 For more ClojureScript React Native resources visit [cljsrn.org](http://cljsrn.org).
+
+If you're looking for a simple ClojureScript wrapper around the React Native API,
+check out the companion library [Natal Shell](https://github.com/dmotz/natal-shell).
