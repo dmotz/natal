@@ -122,6 +122,10 @@ tools.
 - [Watchman](https://facebook.github.io/watchman) `>=3.7.0`
 
 
+## Updating Natal
+You can use the latest version of Natal by running `npm up -g natal`.
+
+
 ## Aspirations
 - [x] Xcode-free workflow with CLI tools
 - [x] Templates for other ClojureScript React wrappers
