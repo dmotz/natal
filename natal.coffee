@@ -511,6 +511,8 @@ cli.command 'deps'
   .description 'install all dependencies for the project'
   .action ->
     try
+      log 'Installing Leiningen jars'
+      exec 'lein deps'
       process.chdir 'native'
       log 'Installing npm packages'
       exec 'npm i'
