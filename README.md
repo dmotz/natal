@@ -123,7 +123,7 @@ tools.
 
 
 ## Updating Natal
-You can use the latest version of Natal by running `npm up -g natal`.
+You can get the latest version of Natal by running `npm up -g natal`.
 
 
 ## Aspirations
@@ -137,6 +137,17 @@ You can use the latest version of Natal by running `npm up -g natal`.
 - [ ] Android support
 
 
+## Example apps bootstrapped with Natal
+- [Om Next app with Python server](https://github.com/dvcrn/om-react-native-demo)
+  by David Mohl, demonstrated in
+  [a talk at the Tokyo iOS Meetup](https://www.youtube.com/watch?v=oJ8t8Hc9XaE).
+
+- [Zooborns](https://github.com/iamjarvo/zooborns)
+  by Jearvon Dharrie, demonstrated in
+  [a talk at Clojure/conj 2015](https://www.youtube.com/watch?v=GDA-g6Ca_dQ).
+
+
+## Coda
 Contributions are welcome.
 
 For more ClojureScript React Native resources visit [cljsrn.org](http://cljsrn.org).
