@@ -26,7 +26,7 @@ podMinVersion   = '0.38.2'
 process.title   = 'natal'
 reactInterfaces =
   om:        'org.omcljs/om "0.9.0"'
-  'om-next': 'org.omcljs/om "1.0.0-alpha14"'
+  'om-next': 'org.omcljs/om "1.0.0-alpha22"'
 
 interfaceNames   = Object.keys reactInterfaces
 defaultInterface = 'om'
