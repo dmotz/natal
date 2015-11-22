@@ -123,7 +123,7 @@ tools.
 
 
 ## Updating Natal
-You can get the latest version of Natal by running `npm up -g natal`.
+You can get the latest version of Natal by running `npm install -g natal` again.
 
 
 ## Aspirations
