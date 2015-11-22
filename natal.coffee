@@ -12,6 +12,7 @@ child   = require 'child_process'
 cli     = require 'commander'
 chalk   = require 'chalk'
 semver  = require 'semver'
+{Tail}  = require 'tail'
 pkgJson = require __dirname + '/package.json'
 
 nodeVersion     = pkgJson.engines.node
@@ -409,36 +410,56 @@ getDeviceUuids = ->
 
 startRepl = (name, autoChoose) ->
   log 'Starting REPL'
-  hasRlwrap =
-    try
-      exec 'type rlwrap'
-      true
-    catch
-      log '
-          Warning: rlwrap is not installed.\nInstall it to make the REPL a much
-          better experience with arrow key support.
-          ', 'red'
-      false
+  try
+    exec 'type rlwrap'
+  catch
+    log '
+        Warning: rlwrap is not installed.\nInstall it to make the REPL a much
+        better experience with arrow key support.
+        ', 'red'
 
   try
-    child.spawn (if hasRlwrap then 'rlwrap' else 'lein'),
-      "#{if hasRlwrap then 'lein ' else ''}trampoline run -m clojure.main -e"
-        .split(' ').concat(
-          """
-          (require '[cljs.repl :as repl])
-          (require '[ambly.core :as ambly])
-          (let [repl-env (ambly.core/repl-env#{if autoChoose then ' :choose-first-discovered true' else ''})]
-          (cljs.repl/repl repl-env
-            :watch \"src\"
-            :watch-fn
-              (fn []
-                (cljs.repl/load-file repl-env
-                  \"src/#{toUnderscored name}/core.cljs\"))
-            :analyze-path \"src\"))
-          """),
-      cwd:   process.cwd()
-      env:   process.env
-      stdio: 'inherit'
+    lein = child.spawn 'lein', 'trampoline run -m clojure.main -e'.split(' ').concat(
+      """
+      (require '[cljs.repl :as repl])
+      (require '[ambly.core :as ambly])
+      (let [repl-env (ambly/repl-env#{if autoChoose then ' :choose-first-discovered true' else ''})]
+        (repl/repl repl-env
+          :watch \"src\"
+          :watch-fn
+            (fn []
+              (repl/load-file repl-env \"src/#{toUnderscored name}/core.cljs\"))
+          :analyze-path \"src\"))
+      """),
+      cwd: process.cwd()
+      env: process.env
+
+    onLeinOut = (chunk) ->
+      if path = chunk.toString().match /Watch compilation log available at:\s(.+)/
+        lein.stdout.removeListener 'data', onLeinOut
+        tail = new Tail path[1]
+        tail.on 'line', (line) ->
+          if line.match /^WARNING/ or line.match /failed compiling/
+            log line, 'red'
+            lein.stdin.write '\n'
+          else if line.match /done\. Elapsed/
+            log line, 'green'
+            lein.stdin.write '\n'
+          else if line.match /^Change detected/
+            log '\n' + line, 'white'
+          else if line.match /^Watching paths/
+            log '\n' + line, 'white'
+            lein.stdin.write '\n'
+          else if line.match /^Compiling/
+            log line, 'white'
+          else
+            log line, 'gray'
+
+
+    lein.stdout.on 'data', onLeinOut
+    lein.stdout.pipe process.stdout
+    process.stdin.pipe lein.stdin
+
 
   catch {message}
     logErr message
