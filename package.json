@@ -13,7 +13,8 @@
     "chalk": "^1.1.1",
     "coffee-script": "^1.9.3",
     "commander": "^2.8.1",
-    "semver": "^5.0.1"
+    "semver": "^5.0.1",
+    "tail": "^0.4.0"
   },
   "engines": {
     "node": ">=4.0.0"
