@@ -133,8 +133,8 @@ You can get the latest version of Natal by running `npm install -g natal` again.
 - [x] Xcode-free workflow with CLI tools
 - [x] Templates for other ClojureScript React wrappers
 - [x] Automatic wrapping of all React Native component functions for ClojureScript
+- [x] Automatically tail compilation log and report errors to REPL
 - [ ] Automatically run React packager in background
-- [ ] Automatically tail cljs build log and report compile errors
 - [ ] Working dev tools
 - [ ] Automatic bundling for offline device usage and App Store distribution
 - [ ] Android support
