@@ -20,7 +20,7 @@ validNameRx     = /^[A-Z][0-9A-Z]*$/i
 camelRx         = /([a-z])([A-Z])/g
 projNameRx      = /\$PROJECT_NAME\$/g
 projNameHyphRx  = /\$PROJECT_NAME_HYPHENATED\$/g
-rnVersion       = '0.13.0'
+rnVersion       = '0.14.2'
 rnPackagerPort  = 8081
 podMinVersion   = '0.38.2'
 process.title   = 'natal'
@@ -227,7 +227,7 @@ init = (projName, interfaceName) ->
     exec "
          node -e
          \"process.argv[3]='#{projName}';
-         require('react-native/local-cli/init')('.', '#{projName}')\"
+         require('react-native/local-cli/cli').init('.', '#{projName}')\"
          "
 
     exec 'rm -rf android'
