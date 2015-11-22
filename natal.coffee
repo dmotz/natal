@@ -12,6 +12,7 @@ child   = require 'child_process'
 cli     = require 'commander'
 chalk   = require 'chalk'
 semver  = require 'semver'
+{Tail}  = require 'tail'
 pkgJson = require __dirname + '/package.json'
 
 nodeVersion     = pkgJson.engines.node
@@ -421,7 +422,7 @@ startRepl = (name, autoChoose) ->
       false
 
   try
-    child.spawn (if hasRlwrap then 'rlwrap' else 'lein'),
+    lein = child.spawn (if hasRlwrap then 'rlwrap' else 'lein'),
       "#{if hasRlwrap then 'lein ' else ''}trampoline run -m clojure.main -e"
         .split(' ').concat(
           """
@@ -436,9 +437,35 @@ startRepl = (name, autoChoose) ->
                   \"src/#{toUnderscored name}/core.cljs\"))
             :analyze-path \"src\"))
           """),
-      cwd:   process.cwd()
-      env:   process.env
-      stdio: 'inherit'
+      cwd: process.cwd()
+      env: process.env
+
+    onLeinOut = (chunk) ->
+      if path = chunk.toString().match /Watch compilation log available at:\s(.+)/
+        lein.stdout.removeListener 'data', onLeinOut
+        tail = new Tail path[1]
+        tail.on 'line', (line) ->
+          if line.match /^WARNING/ or line.match /failed compiling/
+            log line, 'red'
+            lein.stdin.write '\n'
+          else if line.match /done\. Elapsed/
+            log line, 'green'
+            lein.stdin.write '\n'
+          else if line.match /^Change detected/
+            log '\n' + line, 'white'
+          else if line.match /^Watching paths/
+            log '\n' + line, 'white'
+            lein.stdin.write '\n'
+          else if line.match /^Compiling/
+            log line, 'white'
+          else
+            log line, 'gray'
+
+
+    lein.stdout.on 'data', onLeinOut
+    lein.stdout.pipe process.stdout
+    process.stdin.pipe lein.stdin
+
 
   catch {message}
     logErr message
