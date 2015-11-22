@@ -52,11 +52,14 @@ From there you can begin an interactive workflow by starting the REPL.
 
 ```
 $ cd future-app
-$ natal repl
+$ rlwrap natal repl
 ```
 
+(If you don't have `rlwrap` installed, you can simply run `natal repl`, but
+using `rlwrap` allows the use of arrow keys).
+
 If there are no issues, the REPL should connect to the simulator automatically.
-To manually choose which device it connects to, you can run `natal repl --choose`.
+To manually choose which device it connects to, you can run `rlwrap natal repl --choose`.
 
 At the prompt, try loading your app's namespace:
 
@@ -120,7 +123,7 @@ tools.
 - [Xcode](https://developer.apple.com/xcode) (+ Command Line Tools) `>=6.3`
     - [OS X](http://www.apple.com/osx) `>=10.10`
 - [Watchman](https://facebook.github.io/watchman) `>=3.7.0`
-
+- [rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/) `>=0.42` (optional but recommended for REPL use)
 
 ## Updating Natal
 You can get the latest version of Natal by running `npm install -g natal` again.
