@@ -423,14 +423,13 @@ startRepl = (name, autoChoose) ->
       """
       (require '[cljs.repl :as repl])
       (require '[ambly.core :as ambly])
-      (let [repl-env (ambly.core/repl-env#{if autoChoose then ' :choose-first-discovered true' else ''})]
-      (cljs.repl/repl repl-env
-        :watch \"src\"
-        :watch-fn
-          (fn []
-            (cljs.repl/load-file repl-env
-              \"src/#{toUnderscored name}/core.cljs\"))
-        :analyze-path \"src\"))
+      (let [repl-env (ambly/repl-env#{if autoChoose then ' :choose-first-discovered true' else ''})]
+        (repl/repl repl-env
+          :watch \"src\"
+          :watch-fn
+            (fn []
+              (repl/load-file repl-env \"src/#{toUnderscored name}/core.cljs\"))
+          :analyze-path \"src\"))
       """),
       cwd: process.cwd()
       env: process.env
