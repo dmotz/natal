@@ -410,33 +410,28 @@ getDeviceUuids = ->
 
 startRepl = (name, autoChoose) ->
   log 'Starting REPL'
-  hasRlwrap =
-    try
-      exec 'type rlwrap'
-      true
-    catch
-      log '
-          Warning: rlwrap is not installed.\nInstall it to make the REPL a much
-          better experience with arrow key support.
-          ', 'red'
-      false
+  try
+    exec 'type rlwrap'
+  catch
+    log '
+        Warning: rlwrap is not installed.\nInstall it to make the REPL a much
+        better experience with arrow key support.
+        ', 'red'
 
   try
-    lein = child.spawn (if hasRlwrap then 'rlwrap' else 'lein'),
-      "#{if hasRlwrap then 'lein ' else ''}trampoline run -m clojure.main -e"
-        .split(' ').concat(
-          """
-          (require '[cljs.repl :as repl])
-          (require '[ambly.core :as ambly])
-          (let [repl-env (ambly.core/repl-env#{if autoChoose then ' :choose-first-discovered true' else ''})]
-          (cljs.repl/repl repl-env
-            :watch \"src\"
-            :watch-fn
-              (fn []
-                (cljs.repl/load-file repl-env
-                  \"src/#{toUnderscored name}/core.cljs\"))
-            :analyze-path \"src\"))
-          """),
+    lein = child.spawn 'lein', 'trampoline run -m clojure.main -e'.split(' ').concat(
+      """
+      (require '[cljs.repl :as repl])
+      (require '[ambly.core :as ambly])
+      (let [repl-env (ambly.core/repl-env#{if autoChoose then ' :choose-first-discovered true' else ''})]
+      (cljs.repl/repl repl-env
+        :watch \"src\"
+        :watch-fn
+          (fn []
+            (cljs.repl/load-file repl-env
+              \"src/#{toUnderscored name}/core.cljs\"))
+        :analyze-path \"src\"))
+      """),
       cwd: process.cwd()
       env: process.env
 
