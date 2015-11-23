@@ -1,14 +1,9 @@
-;; Need to set js/React first so that Om can load
-(set! js/React (js/require "react-native/Libraries/react-native/react-native.js"))
-
 (ns $PROJECT_NAME_HYPHENATED$.core
   (:require [om.next :as om :refer-macros [defui]])
   (:require-macros [natal-shell.components :refer [view text image touchable-highlight]]
                    [natal-shell.alert-ios :refer [alert]]))
 
-;; Reset js/React back as the form above loads in a different React
 (set! js/React (js/require "react-native/Libraries/react-native/react-native.js"))
-
 
 (defonce app-state (atom {:app/msg "Welcome to $PROJECT_NAME$"}))
 
