@@ -76,12 +76,8 @@ Try this command as an example:
 (swap! app-state assoc :text "Hello Native World")
 ```
 
-When the REPL connects to the simulator it will print the location of its
-compilation log. It's useful to tail it to see any errors, like so:
-
-```
-$ tail -f /Volumes/Ambly-81C53995/watch.log
-```
+When the REPL connects to the simulator it will begin to automatically log
+success messages, warnings, and errors whenever you update your `.cljs` files.
 
 
 ## Tips
