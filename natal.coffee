@@ -437,23 +437,25 @@ startRepl = (name, autoChoose) ->
     onLeinOut = (chunk) ->
       if path = chunk.toString().match /Watch compilation log available at:\s(.+)/
         lein.stdout.removeListener 'data', onLeinOut
-        tail = new Tail path[1]
-        tail.on 'line', (line) ->
-          if line.match /^WARNING/ or line.match /failed compiling/
-            log line, 'red'
-            lein.stdin.write '\n'
-          else if line.match /done\. Elapsed/
-            log line, 'green'
-            lein.stdin.write '\n'
-          else if line.match /^Change detected/
-            log '\n' + line, 'white'
-          else if line.match /^Watching paths/
-            log '\n' + line, 'white'
-            lein.stdin.write '\n'
-          else if line.match /^Compiling/
-            log line, 'white'
-          else
-            log line, 'gray'
+        setTimeout ->
+          tail = new Tail path[1]
+          tail.on 'line', (line) ->
+            if line.match /^WARNING/ or line.match /failed compiling/
+              log line, 'red'
+              lein.stdin.write '\n'
+            else if line.match /done\. Elapsed/
+              log line, 'green'
+              lein.stdin.write '\n'
+            else if line.match /^Change detected/
+              log '\n' + line, 'white'
+            else if line.match /^Watching paths/
+              log '\n' + line, 'white'
+              lein.stdin.write '\n'
+            else if line.match /^Compiling/
+              log line, 'white'
+            else
+              log line, 'gray'
+        , 1000
 
 
     lein.stdout.on 'data', onLeinOut
