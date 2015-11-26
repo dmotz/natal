@@ -57,7 +57,3 @@
     :root-unmount #(.unmountComponentAtNode js/React %)}))
 
 (om/add-root! reconciler WidgetComponent 1)
-
-(defn ^:export init []
-  ((fn render []
-     (.requestAnimationFrame js/window render))))
