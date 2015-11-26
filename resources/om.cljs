@@ -39,7 +39,3 @@
 
 
 (om/root widget app-state {:target 1})
-
-(defn ^:export init []
-  ((fn render []
-     (.requestAnimationFrame js/window render))))
