@@ -233,6 +233,7 @@ init = (projName, interfaceName) ->
 
     exec 'rm -rf android'
     fs.unlinkSync 'index.android.js'
+    fs.appendFileSync '.gitignore', '\n# CocoaPods\n#\nios/Pods\n'
 
     log 'Installing Pod dependencies'
     process.chdir 'ios'
