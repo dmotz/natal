@@ -109,7 +109,7 @@ generateConfig = (name) ->
   log 'Creating Natal config'
   config =
     name:   name
-    device: getUuidForDevice 'iPhone 6s'
+    device: getUuidForDevice 'iPhone 6'
 
   writeConfig config
   config
@@ -350,7 +350,7 @@ init = (projName, interfaceName) ->
 
 launch = ({name, device}) ->
   unless device in getDeviceUuids()
-    log 'Device ID not available, defaulting to iPhone 6s simulator', 'yellow'
+    log 'Device ID not available, defaulting to iPhone 6 simulator', 'yellow'
     {device} = generateConfig name
 
   try
