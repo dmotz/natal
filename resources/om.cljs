@@ -1,8 +1,8 @@
 (ns $PROJECT_NAME_HYPHENATED$.core
-  (:require [om.core :as om])
   (:require-macros [natal-shell.core :refer [with-error-view]]
                    [natal-shell.components :refer [view text image touchable-highlight]]
-                   [natal-shell.alert-ios :refer [alert]]))
+                   [natal-shell.alert-ios :refer [alert]])
+  (:require [om.core :as om]))
 
 (set! js/React (js/require "react-native/Libraries/react-native/react-native.js"))
 
