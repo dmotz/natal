@@ -410,14 +410,13 @@ getDeviceUuids = ->
 
 
 startRepl = (name, autoChoose) ->
-  log 'Starting REPL'
   try
     exec 'type rlwrap'
   catch
-    log '
-        Warning: rlwrap is not installed.\nInstall it to make the REPL a much
-        better experience with arrow key support.
-        ', 'red'
+    log 'Note: rlwrap is not installed but is recommended for REPL use.', 'yellow'
+    log 'You can optionally install it and run `rlwrap natal repl` for proper arrow key support in the REPL.\n', 'gray'
+
+  log 'Starting REPL'
 
   try
     lein = child.spawn 'lein', 'trampoline run -m clojure.main -e'.split(' ').concat(
