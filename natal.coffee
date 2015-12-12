@@ -166,16 +166,27 @@ getBundleId = (name) ->
 
 
 init = (projName, interfaceName) ->
+  log "Creating #{projName}", 'bgMagenta'
+  log ''
+
   if projName.toLowerCase() is 'react' or !projName.match validNameRx
     logErr 'Invalid project name. Use an alphanumeric CamelCase name.'
+
+  try
+    exec 'type react-native'
+  catch
+    try
+      exec 'npm i -g react-native-cli'
+    catch
+      logErr '''
+             react-native-cli is required
+             Run `[sudo] npm i -g react-native-cli` then try again
+             '''
 
   projNameHyph = projName.replace(camelRx, '$1-$2').toLowerCase()
   projNameUs   = toUnderscored projName
 
   try
-    log "Creating #{projName}", 'bgMagenta'
-    log ''
-
     if fs.existsSync projNameHyph
       throw new Error "Directory #{projNameHyph} already exists"
 
