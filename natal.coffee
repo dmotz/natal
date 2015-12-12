@@ -16,6 +16,8 @@ semver  = require 'semver'
 pkgJson = require __dirname + '/package.json'
 
 globalVerbose   = false
+verboseFlag     = '-v, --verbose'
+verboseText     = 'verbose output'
 nodeVersion     = pkgJson.engines.node
 resources       = __dirname + '/resources/'
 validNameRx     = /^[A-Z][0-9A-Z]*$/i
@@ -44,6 +46,12 @@ log = (s, color = 'green') ->
 logErr = (err, color = 'red') ->
   console.error chalk[color] err
   process.exit 1
+
+
+verboseDec = (fn) ->
+  (..., cmd) ->
+    globalVerbose = cmd.verbose
+    fn.apply cli, arguments
 
 
 exec = (cmd, keepOutput) ->
@@ -169,9 +177,7 @@ getBundleId = (name) ->
     logErr message
 
 
-init = (projName, interfaceName, isVerbose) ->
-  globalVerbose = isVerbose
-
+init = (projName, interfaceName) ->
   log "Creating #{projName}", 'bgMagenta'
   log ''
 
@@ -489,9 +495,9 @@ cli.version pkgJson.version
 
 cli.command 'init <name>'
   .description 'create a new ClojureScript React Native project'
+  .option verboseFlag, verboseText
   .option "-i, --interface [#{interfaceNames.join ' '}]", 'specify React interface'
-  .option '-v, --verbose', 'verbose output'
-  .action (name, cmd) ->
+  .action verboseDec (name, cmd) ->
     if cmd
       interfaceName = cmd['interface'] or defaultInterface
     else
@@ -507,25 +513,28 @@ cli.command 'init <name>'
              natal init HelloWorld
              '''
 
-    ensureFreePort -> init name, interfaceName, cmd.verbose
+    ensureFreePort -> init name, interfaceName
 
 
 cli.command 'launch'
   .description 'compile project and run in simulator'
-  .action ->
+  .option verboseFlag, verboseText
+  .action verboseDec ->
     ensureFreePort -> launch readConfig()
 
 
 cli.command 'repl'
   .description 'launch a ClojureScript REPL with background compilation'
+  .option verboseFlag, verboseText
   .option '-c, --choose', 'choose target device from list'
-  .action (cmd) ->
+  .action verboseDec (cmd) ->
     startRepl readConfig().name, !cmd.choose
 
 
 cli.command 'listdevices'
   .description 'list available simulator devices by index'
-  .action ->
+  .option verboseFlag, verboseText
+  .action verboseDec ->
     console.log (getDeviceList()
       .map (line, i) -> "#{i}\t#{line.replace /\[.+\]/, ''}"
       .join '\n')
@@ -533,7 +542,8 @@ cli.command 'listdevices'
 
 cli.command 'setdevice <index>'
   .description 'choose simulator device by index'
-  .action (index) ->
+  .option verboseFlag, verboseText
+  .action verboseDec (index) ->
     unless device = getDeviceList()[parseInt index, 10]
       logErr 'Invalid device index. Run natal listdevices for valid indexes.'
 
@@ -544,13 +554,15 @@ cli.command 'setdevice <index>'
 
 cli.command 'xcode'
   .description 'open Xcode project'
-  .action ->
+  .option verboseFlag, verboseText
+  .action verboseDec ->
     openXcode readConfig().name
 
 
 cli.command 'deps'
   .description 'install all dependencies for the project'
-  .action ->
+  .option verboseFlag, verboseText
+  .action verboseDec ->
     try
       log 'Installing Leiningen jars'
       exec 'lein deps'
