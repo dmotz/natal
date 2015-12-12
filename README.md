@@ -120,6 +120,7 @@ tools.
     - [OS X](http://www.apple.com/osx) `>=10.10`
 - [Watchman](https://facebook.github.io/watchman) `>=3.7.0`
 - [rlwrap](http://utopia.knoware.nl/~hlub/uck/rlwrap/) `>=0.42` (optional but recommended for REPL use)
+- [react-native-cli](https://www.npmjs.com/package/react-native-cli) `>=0.1.7` (install with `npm install -g react-native-cli`)
 
 ## Updating Natal
 You can get the latest version of Natal by running `npm install -g natal` again.
