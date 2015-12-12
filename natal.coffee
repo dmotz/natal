@@ -15,6 +15,7 @@ semver  = require 'semver'
 {Tail}  = require 'tail'
 pkgJson = require __dirname + '/package.json'
 
+globalVerbose   = false
 nodeVersion     = pkgJson.engines.node
 resources       = __dirname + '/resources/'
 validNameRx     = /^[A-Z][0-9A-Z]*$/i
@@ -46,6 +47,9 @@ logErr = (err, color = 'red') ->
 
 
 exec = (cmd, keepOutput) ->
+  if globalVerbose and !keepOutput
+    return child.execSync cmd, stdio: 'inherit'
+
   if keepOutput
     child.execSync cmd
   else
@@ -165,7 +169,9 @@ getBundleId = (name) ->
     logErr message
 
 
-init = (projName, interfaceName) ->
+init = (projName, interfaceName, isVerbose) ->
+  globalVerbose = isVerbose
+
   log "Creating #{projName}", 'bgMagenta'
   log ''
 
@@ -484,6 +490,7 @@ cli.version pkgJson.version
 cli.command 'init <name>'
   .description 'create a new ClojureScript React Native project'
   .option "-i, --interface [#{interfaceNames.join ' '}]", 'specify React interface'
+  .option '-v, --verbose', 'verbose output'
   .action (name, cmd) ->
     if cmd
       interfaceName = cmd['interface'] or defaultInterface
@@ -500,7 +507,7 @@ cli.command 'init <name>'
              natal init HelloWorld
              '''
 
-    ensureFreePort -> init name, interfaceName
+    ensureFreePort -> init name, interfaceName, cmd.verbose
 
 
 cli.command 'launch'
