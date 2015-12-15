@@ -8,7 +8,7 @@
 
 (defonce app-state (atom {:app/msg "Welcome to $PROJECT_NAME$"}))
 
-(defui WidgetComponent
+(defui MainView
   static om/IQuery
   (query [this]
     '[:app/msg])
@@ -52,4 +52,4 @@
     :root-render #(.render js/React %1 %2)
     :root-unmount #(.unmountComponentAtNode js/React %)}))
 
-(om/add-root! reconciler WidgetComponent 1)
+(om/add-root! reconciler MainView 1)

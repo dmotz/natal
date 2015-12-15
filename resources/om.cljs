@@ -8,7 +8,7 @@
 
 (defonce app-state (atom {:text "Welcome to $PROJECT_NAME$"}))
 
-(defn widget [data owner]
+(defn main-view [data owner]
   (reify
     om/IRender
     (render [this]
@@ -35,4 +35,4 @@
               "press me")))))))
 
 
-(om/root widget app-state {:target 1})
+(om/root main-view app-state {:target 1})
