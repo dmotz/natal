@@ -138,6 +138,7 @@ You can get the latest version of Natal by running `npm install -g natal` again.
 - [ ] Working dev tools
 - [ ] Automatic bundling for offline device usage and App Store distribution
 - [ ] Android support
+- [ ] Automatic setup of JS modules
 
 
 ## Example apps bootstrapped with Natal
