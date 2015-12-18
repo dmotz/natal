@@ -8,7 +8,7 @@
                  [$REACT_INTERFACE$]
                  [org.omcljs/ambly "0.6.0"]
                  [natal-shell "0.1.2"]]
- :plugins [[lein-cljsbuild "1.1.1"]]
+ :plugins [[lein-cljsbuild "1.1.2"]]
  :cljsbuild {:builds {:dev {:source-paths ["src"]
                             :compiler {:output-to "target/out/main.js"
                                        :output-dir "target/out"
