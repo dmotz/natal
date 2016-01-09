@@ -27,6 +27,7 @@ projNameHyphRx  = /\$PROJECT_NAME_HYPHENATED\$/g
 rnVersion       = '0.17.0'
 rnPackagerPort  = 8081
 podMinVersion   = '0.38.2'
+rnCliMinVersion = '0.1.10'
 process.title   = 'natal'
 reactInterfaces =
   om:        'org.omcljs/om "0.9.0"'
@@ -177,6 +178,16 @@ getBundleId = (name) ->
     logErr message
 
 
+installRnCli = ->
+  try
+    exec "npm i -g react-native-cli@#{rnCliMinVersion}"
+  catch
+    logErr """
+           react-native-cli@#{rnCliMinVersion} is required
+           Run `[sudo] npm i -g react-native-cli@#{rnCliMinVersion}` then try again
+           """
+
+
 init = (projName, interfaceName) ->
   log "Creating #{projName}", 'bgMagenta'
   log ''
@@ -185,15 +196,11 @@ init = (projName, interfaceName) ->
     logErr 'Invalid project name. Use an alphanumeric CamelCase name.'
 
   try
-    exec 'type react-native'
+    cliVersion = exec('react-native --version', true).toString().trim()
+    unless semver.satisfies rnCliMinVersion, ">=#{rnCliMinVersion}"
+      installRnCli()
   catch
-    try
-      exec 'npm i -g react-native-cli'
-    catch
-      logErr '''
-             react-native-cli is required
-             Run `[sudo] npm i -g react-native-cli` then try again
-             '''
+    installRnCli()
 
   projNameHyph = projName.replace(camelRx, '$1-$2').toLowerCase()
   projNameUs   = toUnderscored projName
