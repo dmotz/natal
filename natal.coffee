@@ -569,16 +569,27 @@ cli.command 'xcode'
 cli.command 'deps'
   .description 'install all dependencies for the project'
   .option verboseFlag, verboseText
-  .action verboseDec ->
+  .option '-l, --lein', 'Leiningen jars only'
+  .option '-n, --npm',  'npm packages only'
+  .option '-p, --pods', 'pods only'
+  .action verboseDec (cmd) ->
+    all = ['lein', 'npm', 'pods'].every (o) -> !cmd[o]
+
     try
-      log 'Installing Leiningen jars'
-      exec 'lein deps'
-      process.chdir 'native'
-      log 'Installing npm packages'
-      exec 'npm i'
-      log 'Installing pods'
-      process.chdir 'ios'
-      exec 'pod install'
+      if all or cmd.lein
+        log 'Installing Leiningen jars'
+        exec 'lein deps'
+
+      if all or cmd.npm
+        process.chdir 'native'
+        log 'Installing npm packages'
+        exec 'npm i'
+
+      if all or cmd.pods
+        log 'Installing pods'
+        process.chdir if all or cmd.npm then 'ios' else 'native/ios'
+        exec 'pod install'
+
     catch {message}
       logErr message
 
