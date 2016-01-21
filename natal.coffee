@@ -214,7 +214,7 @@ init = (projName, interfaceName) ->
     exec 'type watchman'
     exec 'type xcodebuild'
 
-    podVersion = exec('pod --version', true).toString().trim()
+    podVersion = exec('pod --version', true).toString().trim().replace /\.beta.+$/, ''
     unless semver.satisfies podVersion, ">=#{podMinVersion}"
       throw new Error """
                       Natal requires CocoaPods #{podMinVersion} or higher (you have #{podVersion}).
