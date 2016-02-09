@@ -13,14 +13,14 @@
 #import "RCTEventDispatcher.h"
 #import "ABYServer.h"
 #import "ABYContextManager.h"
-#import "RCTContextExecutor.h"
+#import "RCTJSCExecutor.h"
 
 /**
  This class exists so that a client-created `JSGlobalContextRef`
  instance and optional JavaScript thread can be injected
- into an `RCTContextExecutor`.
+ into an `RCTJSCExecutor`.
  */
-@interface ABYContextExecutor : RCTContextExecutor
+@interface ABYContextExecutor : RCTJSCExecutor
 
 /**
  Sets the JavaScript thread that will be used when `init`ing
