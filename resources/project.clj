@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.189"]
                  [$REACT_INTERFACE$]
-                 [org.omcljs/ambly "0.6.0"]
+                 [org.omcljs/ambly "0.7.0"]
                  [natal-shell "0.1.6"]]
  :plugins [[lein-cljsbuild "1.1.2"]]
  :cljsbuild {:builds {:dev {:source-paths ["src"]
