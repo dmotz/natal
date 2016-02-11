@@ -1,4 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
-pod "Ambly", "~> 0.7.0"
+target "$PROJECT_NAME$" do
+  pod "Ambly", "~> 0.7.0"
+end
