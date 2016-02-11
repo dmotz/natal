@@ -268,6 +268,7 @@ init = (projName, interfaceName) ->
     log 'Installing Pod dependencies'
     process.chdir 'ios'
     exec "cp #{resources}Podfile ."
+    edit 'Podfile', [[projNameRx, projName]]
     exec 'pod install'
 
     log 'Updating Xcode project'
